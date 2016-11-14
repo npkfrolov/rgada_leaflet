@@ -3,11 +3,13 @@
  */
 
 
-var mainMap = L.map('map').setView([55.6, 37], 8);
-var popup = new L.Popup({offset:  L.point(0, -20)});
-overlay = null;
-overlay_hash = null;
-raster_layers = [];
+var mainMap = L.map('map').setView([55.6, 37], 8),
+    popup = new L.Popup({offset:  L.point(0, -20)}),
+    overlay = null,
+    overlay_hash = null,
+    raster_layers = [],
+    centroids,
+    markers;
 
 // Change the position of the Zoom Control to a newly created placeholder.
 addControlPlaceholders(mainMap);
@@ -26,9 +28,9 @@ $.ajax({
                 layer.on({click: onClick});
                 layer.on({mouseover: onMouseOver});
                 layer.on({mouseout: onMouseOut});
+                layer.options.isRasterShown = false;
             }
         });
-
   		markers = L.markerClusterGroup(
   		    {
                 maxClusterRadius: 40
@@ -38,15 +40,21 @@ $.ajax({
     }
 });
 
-mainMap.on("zoomstart", function (e) { mainMap.closePopup(); });
-$('#raster_transp').on("change mousewheel", geoRasterTransp);
+mainMap.on("zoomstart", function (e) { mainMap.closePopup(); })
+       .on("click", function(e){
+            hideGeoRaster(); 
+        });
+
+$('#raster_opacity').on("change mousewheel", geoRasterOpacity);
 
 
 function onMouseOver(e) {
     clearOvelay();
-    var numCat = this.feature.properties.NumbCat;
-    overlay_hash = Math.random();
-    showDrawingExtent(numCat, overlay_hash);
+    if (!e.target.options.isRasterShown){
+        var numCat = this.feature.properties.NumbCat;
+        overlay_hash = Math.random();
+        showDrawingExtent(numCat, overlay_hash);
+    }
 }
 
 function onMouseOut(e) {
@@ -55,10 +63,11 @@ function onMouseOut(e) {
 }
 
 function onClick(e) {
+    clearOvelay();
     hideGeoRaster(); //TEMP
     var numCat = this.feature.properties.NumbCat;
     showPopup(numCat, e.latlng);
-    showGeoRaster(numCat); //TEMP
+    if (showGeoRaster(numCat)) e.target.options.isRasterShown = true; //TEMP
 }
 
 function checkStr(str) {
@@ -172,7 +181,10 @@ function showGeoRaster(numCat) {
         });
         raster_layer.addTo(mainMap);
         raster_layers.push(raster_layer);
+        showOpacityControl();
     }
+
+    return res.length;
 }
 
 
@@ -180,16 +192,32 @@ function hideGeoRaster() {
     $.each(raster_layers, function(index, item){
         mainMap.removeLayer(item);
     });
-    raster_layers = [];
+
+    $.each(centroids._layers, function(index, item){
+        item.options.isRasterShown = false;
+    })
+
+    raster_layers = [];    
+    hideOpacityControl();
 }
 
-function geoRasterTransp() {
-    var new_transp = $(this).val();
-    var op = (100.0-new_transp)/100;
+function geoRasterOpacity() {
+    var new_opacity = $(this).val();
+    var op = new_opacity/100;
 
     $.each(raster_layers, function(index, item){
         item.setOpacity(op);
     });
+}
+
+// show/hide raster opacity control
+
+function showOpacityControl() {
+    $(".map-opacity").addClass("map-opacity_active");
+}
+
+function hideOpacityControl() {
+    $(".map-opacity").removeClass("map-opacity_active");
 }
 
 // Create centered Control placeholders

@@ -24,6 +24,10 @@ html, body{
     width: 100vw;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 .map-container{
     position: relative;
     margin-right: 480px;
@@ -53,17 +57,13 @@ html, body{
     user-select: none; 
 }
 
-#raster_transp{
-    position: absolute;
-    opacity: 0;
-    bottom:0;
-    left:0;
-    right:0;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 /* Map content */
+.map-control{
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
+    border-radius: 2px;
+    z-index: 1000;
+}
 .map-title{
     position: absolute;
     left: 20px;
@@ -78,6 +78,42 @@ html, body{
     border-radius: 4px;
     box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
     z-index: 1000;
+}
+
+.map-opacity{
+    position: absolute;
+    opacity: 0;
+    bottom:20px;
+    left:0;
+    right:0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    transition: opacity .4s;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.map-opacity_active{
+    opacity: 1;
+}
+.map-opacity__control{
+    width: 100%;
+    display: block;
+}
+
+.map-opacity__inner{
+    position: relative;
+    padding-left: 30px;
+}
+
+.map-opacity__icon{
+    position: absolute;
+    left:0;
+    top: 50%;
+    font-size: 18px;
+    margin-top: -9px;
+    color: #361d18;
 }
 
 /* My leaflet style */
@@ -96,6 +132,21 @@ html, body{
 
 .leaflet-left .leaflet-control{
     margin-left: 20px;
+}
+
+.leaflet-bottom .leaflet-control{
+    margin-bottom: 20px;
+}
+
+.leaflet-right .leaflet-control{
+    margin-right: 20px;
+}
+
+.leaflet-right .leaflet-control-attribution{
+    margin-right: 0;
+}
+.leaflet-bottom .leaflet-control-attribution{
+    margin-bottom: 0;
 }
 
 .leaflet-bar{
