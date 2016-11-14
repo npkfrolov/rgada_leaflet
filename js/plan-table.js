@@ -1,0 +1,35 @@
+/**
+ * Created by yellow on 01.11.16.
+ */
+
+planTable = new webix.ui({
+        container:"plan_table",
+        view:"datatable",
+        columns:[
+            { id:"Title",   header:["Title", { content:"textFilter"}], sort:"string", width:230},
+            { id:"ArchNumb", header:["ArchNumb", { content:"textFilter"}], sort:"string", width:150},
+            { id:"NumbCat",   header:["NumbCat", { content:"textFilter"}],  sort:"int", width:80}
+        ],
+        select:"row",
+        fixedRowHeight:false,
+        rowLineHeight:25,
+        rowHeight:25,
+		autowidth:true,
+        on: {
+            onAfterLoad: function () {
+                webix.delay(function () {
+                    this.adjustRowHeight("Title", true);
+                    this.render();
+                }, this);
+            },
+            onColumnResize: function () {
+                this.adjustRowHeight("Title", true);
+                this.render();
+            },
+            onItemClick : function() {
+                var item = this.getSelectedItem();
+                zoomAndShowPopup(item.NumbCat);
+            }
+        },
+        url:"http://rgada.info/nextgisweb/resource/1536/store/"
+});
