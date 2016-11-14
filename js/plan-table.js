@@ -6,15 +6,15 @@ planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
         columns:[
-            { id:"Title",   header:["Title", { content:"textFilter"}], sort:"string", width:230},
-            { id:"ArchNumb", header:["ArchNumb", { content:"textFilter"}], sort:"string", width:150},
-            { id:"NumbCat",   header:["NumbCat", { content:"textFilter"}],  sort:"int", width:80}
+            { id:"Title",   header:["Title", { content:"textFilter"}], sort:"string", fillspace:2},
+            { id:"ArchNumb", header:["ArchNumb", { content:"textFilter"}], sort:"string",  fillspace:1},
+            { id:"NumbCat",   header:["NumbCat", { content:"textFilter"}],  sort:"int",  width:80}
         ],
         select:"row",
         fixedRowHeight:false,
         rowLineHeight:25,
         rowHeight:25,
-		autowidth:true,
+        scrollX:false,
         on: {
             onAfterLoad: function () {
                 webix.delay(function () {
@@ -33,3 +33,5 @@ planTable = new webix.ui({
         },
         url:"http://rgada.info/nextgisweb/resource/1536/store/"
 });
+
+webix.event(window, "resize", function(){ planTable.adjust(); })
