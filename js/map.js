@@ -9,6 +9,10 @@ overlay = null;
 overlay_hash = null;
 raster_layers = [];
 
+// Change the position of the Zoom Control to a newly created placeholder.
+addControlPlaceholders(mainMap);
+mainMap.zoomControl.setPosition('verticalcenterleft');
+
 // BaseLayers
 var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
 
@@ -186,4 +190,20 @@ function geoRasterTransp() {
     $.each(raster_layers, function(index, item){
         item.setOpacity(op);
     });
+}
+
+// Create centered Control placeholders
+function addControlPlaceholders(map) {
+    var corners = map._controlCorners,
+        l = 'leaflet-',
+        container = map._controlContainer;
+
+    function createCorner(vSide, hSide) {
+        var className = l + vSide + ' ' + l + hSide;
+
+        corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+    }
+
+    createCorner('verticalcenter', 'left');
+    createCorner('verticalcenter', 'right');
 }

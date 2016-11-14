@@ -1,3 +1,19 @@
+@import "normalize.css";
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: normal;
+  src: url("fonts/lato-regular.eot?#iefix") format("embedded-opentype"), url("fonts/lato-regular.woff2") format("woff2"), url("fonts/lato-regular.woff") format("woff"), url("fonts/lato-regular.ttf") format("truetype"), url("fonts/lato-regular.svg#Lato") format("svg"); }
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: bold;
+  src: url("fonts/lato-bold.eot?#iefix") format("embedded-opentype"), url("fonts/lato-bold.woff2") format("woff2"), url("fonts/lato-bold.woff") format("woff"), url("fonts/lato-bold.ttf") format("truetype"), url("fonts/lato-bold.svg#Lato") format("svg"); }s
+
+/* Layout */
+
 body {
     padding: 0;
     margin: 0;
@@ -8,7 +24,13 @@ html, body{
     width: 100vw;
 }
 
-#map {
+.map-container{
+    position: relative;
+    margin-right: 480px;
+}
+
+#map,
+.map-container {
     height: 100vh;
 }
 
@@ -39,4 +61,68 @@ html, body{
     right:0;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Map content */
+.map-title{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    font-size: 16px;
+    font-family: "Lato", Roboto, sans-serif;
+    font-weight: bold;
+    background-color: rgba(54, 29, 24, 0.77);
+    color: rgba(255,255,255,.94);
+    padding: 11px 16px 12px;
+    margin:0;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
+    z-index: 1000;
+}
+
+/* My leaflet style */
+
+.leaflet-verticalcenter {
+    position: absolute;
+    top: 47%;
+    transform: translateY(-50.5%);
+    z-index: 1000;
+}
+
+.leaflet-verticalcenter .leaflet-control {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.leaflet-left .leaflet-control{
+    margin-left: 20px;
+}
+
+.leaflet-bar{
+    box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
+}
+
+.leaflet-bar a{
+    border-bottom: 1px solid #ddd;
+}
+
+.leaflet-bar a, .leaflet-bar a:hover{
+    color: #361d18;    
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.leaflet-bar a:first-child {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.leaflet-bar a:last-child {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.leaflet-iconLayers-layer{
+    box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
 }
