@@ -144,10 +144,6 @@ p{
     border-width: 0 !important;
 }
 
-#plan_table .webix_hcell.webix_ss_filter:last-child{
-    padding-right: 4px;
-}
-
 #plan_table .webix_hcell.webix_ss_filter > input{
     background: url("../img/search-icon.png") right center no-repeat #fff;
     padding-right: 36px;
@@ -451,6 +447,11 @@ p{
     line-height: 1.43 !important;
 }
 
+.webix_column>div.webix_invalid.webix_row_select:nth-child(even), 
+.webix_column>div.webix_row_select{
+    padding-top:12px;
+}
+
 .webix_column:first-child >div, 
 .webix_column:first-child .webix_table_cell{
     padding-left: 20px;
@@ -471,7 +472,7 @@ p{
 }
 
 .webix_dtable td:last-child .webix_hcell.webix_ss_filter{
-    padding-right: 20px;
+    padding-right: 4px;
 }
 
 
