@@ -2,13 +2,33 @@
  * Created by yellow on 01.11.16.
  */
 
+function sortByNumbCat(a,b){
+        var a = parseInt(a.NumbCat);
+        var b = parseInt(b.NumbCat);
+        return a>b?1:(a<b?-1:0);
+}
+
+function oneFilter(value, filter, obj){
+
+    fInt = parseInt(filter)
+    if (fInt)
+        if ( parseInt(obj.NumbCat)===fInt) return true;
+
+    if (obj.Title.toLowerCase().indexOf(filter)!=-1) return true;
+    if (obj.ArchNumb.toLowerCase().indexOf(filter) !== -1) return true;
+
+    return false;
+}
+
+function cellContent(obj) {
+    return "Title: " + obj.Title + "<br>ArcNumb: " + obj.ArchNumb + "<br>NumCat: " + obj.NumbCat;
+}
+
 planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
         columns:[
-            { id:"Title",   header:["Title", { content:"textFilter"}], sort:"string", fillspace:2},
-            { id:"ArchNumb", header:["ArchNumb", { content:"textFilter"}], sort:"string",  fillspace:1},
-            { id:"NumbCat",   header:["NumbCat", { content:"textFilter"}],  sort:"int",  width:80}
+            { id:"plans", header:["Чертежи", { content:"textFilter", compare:oneFilter}], sort: sortByNumbCat, fillspace: true, template: cellContent }
         ],
         select:"row",
         fixedRowHeight:false,
@@ -18,12 +38,12 @@ planTable = new webix.ui({
         on: {
             onAfterLoad: function () {
                 webix.delay(function () {
-                    this.adjustRowHeight("Title", true);
+                    this.adjustRowHeight("plans", true);
                     this.render();
                 }, this);
             },
             onColumnResize: function () {
-                this.adjustRowHeight("Title", true);
+                this.adjustRowHeight("plans", true);
                 this.render();
             },
             onItemClick : function() {
@@ -31,7 +51,7 @@ planTable = new webix.ui({
                 zoomAndShowPopup(item.NumbCat);
             }
         },
-        url:"http://rgada.info/nextgisweb/resource/1536/store/"
+        url: polygon_table_url
 });
 
 webix.event(window, "resize", function(){ planTable.adjust(); })
