@@ -8,14 +8,27 @@ function sortByNumbCat(a,b){
         return a>b?1:(a<b?-1:0);
 }
 
+function oneFilter(value, filter, obj){
+
+    fInt = parseInt(filter)
+    if (fInt)
+        if ( parseInt(obj.NumbCat)===fInt) return true;
+
+    if (obj.Title.toLowerCase().indexOf(filter)!=-1) return true;
+    if (obj.ArchNumb.toLowerCase().indexOf(filter) !== -1) return true;
+
+    return false;
+}
+
+function cellContent(obj) {
+    return "Title: " + obj.Title + "<br>ArcNumb: " + obj.ArchNumb + "<br>NumCat: " + obj.NumbCat;
+}
+
 planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
         columns:[
-
-            { id:"plans", header:["Чертежи", { content:"textFilter"}], sort: sortByNumbCat, fillspace: true,
-                template:function(obj){return "Title: " + obj.Title + "<br>ArcNumb: " + obj.ArchNumb + "<br>NumCat: " + obj.NumbCat;}
-            }
+            { id:"plans", header:["Чертежи", { content:"textFilter", compare:oneFilter}], sort: sortByNumbCat, fillspace: true, template: cellContent }
         ],
         select:"row",
         fixedRowHeight:false,
