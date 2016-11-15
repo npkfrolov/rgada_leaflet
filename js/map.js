@@ -4,7 +4,8 @@
 
 
 var mainMap = L.map('map').setView([55.6, 37], 8),
-    popup = new L.Popup({offset:  L.point(0, -20)}),
+    popup = $(".object-info"),
+    popupInner = popup.find(".object-info__content"),
     overlay = null,
     overlay_hash = null,
     raster_layers = [],
@@ -39,10 +40,11 @@ $.ajax({
     }
 });
 
-mainMap.on("zoomstart", function (e) { mainMap.closePopup(); })
-       .on("click", function(e){
-            hideGeoRaster(); 
+mainMap.on("click", function(e){
+            hideObjectInfo();
         });
+
+$('.js-closePopup').on("click", hidePopup);
 
 $('#raster_opacity').on("change mousewheel", geoRasterOpacity);
 
@@ -62,12 +64,21 @@ function onMouseOut(e) {
 }
 
 function onClick(e) {
+    hideObjectInfo();
+    showObjectInfo(this.feature.properties.NumbCat, e.target);
+}
+
+function showObjectInfo(num, target){
+    showPopup(num);
+    if (showGeoRaster(num)) target.options.isRasterShown = true; //TEMP
+}
+
+function hideObjectInfo(){
     clearOvelay();
     hideGeoRaster(); //TEMP
-    var numCat = this.feature.properties.NumbCat;
-    showPopup(numCat, e.latlng);
-    if (showGeoRaster(numCat)) e.target.options.isRasterShown = true; //TEMP
+    hidePopup();
 }
+
 
 function checkStr(str) {
     if (!str || str.length === 0 || /^\s*$/.test(str))
@@ -120,30 +131,31 @@ function showDrawingExtent(NumbCat, op_overlay_hash) {
     }
 }
 
-function showPopup(numCat, latLng) {
-// search in table
+function showPopup(numCat) {
+    // search in table
     var res = planTable.find(function (row) {
         return row.NumbCat == numCat;
     });
     if (res.length > 0) {
         feat = res[0];
         var popupContent =
-            "<table>" +
-            "<tr><td class=\"zag2\">Номер по каталогу: </td><td class=\"zag2\">" + feat.NumbCat + "</td></tr>" +
-            "<tr><td class=\"zag2\">Заголовок: </td><td class=\"zag2\">" + feat.Title + "</td></tr>" +
-            "</table>" +
-            "<table width=100%><tr align=center><td align=center><a href='orig/" + feat.NumbCat + "/" + feat.NumbCat + ".jpg' target=_blank><img src='preview/" + feat.NumbCat + "/p" + feat.NumbCat + ".jpg' width='150'></a></td></tr>" +
-            "</table>" +
-            "<table>" +
-            "<tr><td class=\"zag2\">Шифр ед.хр.</td><td class=\"zag2\">" + feat.ArchNumb + "</td></tr>" +
-            "<tr><td class=\"zag2\">Надписи: </td><td class=\"zag2\">" + feat.Text + "</td></tr>" +
-            "<tr><td class=\"zag2\">Надписи на обороте: </td><td class=\"zag2\">" + checkStr(feat.TextRev) + "</td></tr>" +
-            "</table>";
+            "<div class='object-info__title h1'>" + feat.Title + "</div>" +            
+            "<div class='object-info__meta'>Шифр:" + feat.ArchNumb + "</div>" +
+            "<div class='object-info__pic-wrapper'>" +
+                "<div class='object-info__num'>" + feat.NumbCat + "</div>" +
+                "<a class='object-info__pic-link' href='orig/" + feat.NumbCat + "/" + feat.NumbCat + ".jpg' target=_blank><img class='object-info__pic' src='preview/" + feat.NumbCat + "/p" + feat.NumbCat + ".jpg' width='150'></a>" +
+            "</div>" +
+            "<div class='h2'>Надписи</div> <p>" + feat.Text + "</p>" +
+            "<div class='h2'>Надписи на обороте</div> <p>" + checkStr(feat.TextRev)+ "</p>";
 
-        popup.setLatLng(latLng);
-        popup.setContent(popupContent);
-        mainMap.openPopup(popup);
+        popupInner.empty().html(popupContent);
+        popup.addClass("object-info_active");
     }
+}
+
+function hidePopup() {    
+    popup.removeClass("object-info_active");
+    popupInner.empty();
 }
 
 function zoomAndShowPopup(numCat) {
@@ -158,7 +170,7 @@ function zoomAndShowPopup(numCat) {
     if (feat) {
         var center = feat.getBounds().getCenter();
         mainMap.setView(center, 15);
-        showPopup(numCat, center);
+        showObjectInfo(numCat, feat);
     }
 }
 
