@@ -13,6 +13,13 @@ var mainMap = L.map('map').setView([55.6, 37], 8),
     centroids,
     markers;
 
+
+var defIcon = new L.Icon.Default();
+defIcon.options.iconSize = [28, 40];
+var selIcon = new L.Icon.Default();
+selIcon.options.iconUrl = 'marker-icon-red.png';
+selIcon.options.iconSize = [28, 40];
+
 // Change the position of the Zoom Control to a newly created placeholder.
 addControlPlaceholders(mainMap);
 mainMap.zoomControl.setPosition('verticalcenterleft');
@@ -35,6 +42,9 @@ $.ajax({
                 layer.on({mouseover: onMouseOver});
                 layer.on({mouseout: onMouseOut});
                 layer.options.isRasterShown = false;
+            },
+            pointToLayer: function(feature, latlng) {
+                return L.marker(latlng, {icon: defIcon});
             }
         });
   		markers = L.markerClusterGroup(
@@ -91,15 +101,12 @@ function hideObjectInfo(){
 function highlightIcon(feature){
     var marker = feature._layers[Object.keys(feature._layers)[0]]; //BAD
     selected_markers.push(marker);
-    var selIcon =new L.Icon.Default;
-    selIcon.options.iconUrl = 'marker-icon-red.png';
-    selIcon.options.iconSize = [28, 40];
     marker.setIcon(selIcon);
 }
 
 function resetIcons(){
     $.each(selected_markers, function(index, item){
-        item.setIcon(new L.Icon.Default());
+        item.setIcon(defIcon);
     });
     selected_markers = [];
 }
