@@ -2,13 +2,20 @@
  * Created by yellow on 01.11.16.
  */
 
+function sortByNumbCat(a,b){
+        var a = parseInt(a.NumbCat);
+        var b = parseInt(b.NumbCat);
+        return a>b?1:(a<b?-1:0);
+}
+
 planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
         columns:[
-            { id:"Title",   header:["Title", { content:"textFilter"}], sort:"string", fillspace:2},
-            { id:"ArchNumb", header:["ArchNumb", { content:"textFilter"}], sort:"string",  fillspace:1},
-            { id:"NumbCat",   header:["NumbCat", { content:"textFilter"}],  sort:"int",  width:80}
+
+            { id:"plans", header:["Чертежи", { content:"textFilter"}], sort: sortByNumbCat, fillspace: true,
+                template:function(obj){return "Title: " + obj.Title + "<br>ArcNumb: " + obj.ArchNumb + "<br>NumCat: " + obj.NumbCat;}
+            }
         ],
         select:"row",
         fixedRowHeight:false,
@@ -18,12 +25,12 @@ planTable = new webix.ui({
         on: {
             onAfterLoad: function () {
                 webix.delay(function () {
-                    this.adjustRowHeight("Title", true);
+                    this.adjustRowHeight("plans", true);
                     this.render();
                 }, this);
             },
             onColumnResize: function () {
-                this.adjustRowHeight("Title", true);
+                this.adjustRowHeight("plans", true);
                 this.render();
             },
             onItemClick : function() {
