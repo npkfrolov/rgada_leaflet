@@ -31,7 +31,7 @@ planTable = new webix.ui({
                 zoomAndShowPopup(item.NumbCat);
             }
         },
-        url:"http://rgada.info/nextgisweb/resource/1536/store/"
+        url: polygon_table_url
 });
 
 webix.event(window, "resize", function(){ planTable.adjust(); })

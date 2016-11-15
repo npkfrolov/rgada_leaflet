@@ -19,8 +19,7 @@ mainMap.zoomControl.setPosition('verticalcenterleft');
 var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
 
 $.ajax({
-    //http://rgada.info/nextgisweb/resource/354/geojson/
-    url: 'http://rgada.info/nextgisweb/resource/891/geojson/',
+    url: point_layer_url,
     dataType: 'JSON',
     success: function(geojson){
         centroids = L.Proj.geoJson(geojson, {
@@ -92,7 +91,7 @@ function showDrawingExtent(NumbCat, op_overlay_hash) {
     if(res.length>0) {
         feat = res[0];
         polygon_id = feat.id;
-        url = "http://rgada.info/nextgisweb/api/resource/1536/feature/" + polygon_id;
+        url = polygon_layer_url + polygon_id;
 
         $.ajax({
 
@@ -157,7 +156,7 @@ function zoomAndShowPopup(numCat) {
         }
     });
     if (feat) {
-        center = feat.getBounds().getCenter();
+        var center = feat.getBounds().getCenter();
         mainMap.setView(center, 15);
         showPopup(numCat, center);
     }
@@ -195,7 +194,7 @@ function hideGeoRaster() {
 
     $.each(centroids._layers, function(index, item){
         item.options.isRasterShown = false;
-    })
+    });
 
     raster_layers = [];    
     hideOpacityControl();
