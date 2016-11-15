@@ -144,11 +144,6 @@ p{
     border-width: 0 !important;
 }
 
-#plan_table .webix_hcell.webix_ss_filter{
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
 #plan_table .webix_hcell.webix_ss_filter:last-child{
     padding-right: 4px;
 }
@@ -156,6 +151,11 @@ p{
 #plan_table .webix_hcell.webix_ss_filter > input{
     background: url("../img/search-icon.png") right center no-repeat #fff;
     padding-right: 36px;
+}
+
+#plan_table .webix_ss_header td,
+#plan_table .webix_dtable .webix_ss_vscroll_header{
+    border-right-color: #ffd457;
 }
 
 #plan_table .webix_cell{
@@ -432,6 +432,7 @@ p{
 .webix_ss_header td,
 .webix_dtable .webix_ss_vscroll_header{
     border-color: #ffd457;
+    border-right-color: rgba(0,0,0,.08);
 }
 
 .webix_dtable .webix_ss_filter input,
@@ -445,12 +446,34 @@ p{
 }
 
 .webix_column>div, 
-.webix_table_cell,
-.webix_column>div.webix_invalid.webix_row_select:nth-child(even), 
-.webix_column>div.webix_row_select{
-    padding: 12px 20px;
+.webix_table_cell{
+    padding: 12px 16px;
     line-height: 1.43 !important;
 }
+
+.webix_column:first-child >div, 
+.webix_column:first-child .webix_table_cell{
+    padding-left: 20px;
+}
+
+.webix_column:last-child >div, 
+.webix_column:last-child .webix_table_cell{
+    padding-right: 20px;
+}
+
+.webix_dtable .webix_hcell.webix_ss_filter{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.webix_dtable td:first-child .webix_hcell.webix_ss_filter{
+    padding-left: 20px;
+}
+
+.webix_dtable td:last-child .webix_hcell.webix_ss_filter{
+    padding-right: 20px;
+}
+
 
 .cell-hover{
     background-color: #f9f9f9;

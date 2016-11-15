@@ -8,9 +8,9 @@ bigTable = new webix.ui({
         view:"datatable",
         hover:"cell-hover",
         columns:[
-            { id:"Title",   header:[{ content:"textFilter", placeholder: "Название" }], sort:"string"},
-            { id:"ArchNumb", header:[{ content:"textFilter", placeholder: "Шифр" }], sort:"string"},
-            { id:"NumbCat",   header:[{ content:"textFilter", placeholder: "№ по каталогу" }],  sort:"int"}
+            { id:"Title",   header:[{ content:"textFilter", placeholder: "Название", height: "68" }], sort:"string", fillspace: true},
+            { id:"ArchNumb", header:[{ content:"textFilter", placeholder: "Шифр", height: "68" }], sort:"string", fillspace: true},
+            { id:"NumbCat",   header:[{ content:"textFilter", placeholder: "№ по каталогу", height: "68" }],  sort:"int", fillspace: true}
         ],
         select:"row",
         fixedRowHeight:false,
