@@ -110,11 +110,11 @@ p{
 
 .object-list__footer{
     position: absolute;
-    height: 60px;
+    height: 50px;
     bottom: 0;
     text-align: center;
     width: 100%;
-    line-height: 60px;
+    line-height: 50px;
     background-color: rgba(89, 70, 66, 0.24);
 }
 
@@ -136,7 +136,7 @@ p{
     position: absolute;
     right:0;
     top:0;
-    bottom: 60px;
+    bottom: 50px;
     width: 100%;
 }
 
