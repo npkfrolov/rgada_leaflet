@@ -254,6 +254,8 @@ function geoRasterOpacity() {
 
 function showOpacityControl() {
     $(".map-opacity").addClass("map-opacity_active");
+    $("#raster_opacity").val(100);
+
 }
 
 function hideOpacityControl() {
