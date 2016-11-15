@@ -21,14 +21,18 @@ function oneFilter(value, filter, obj){
 }
 
 function cellContent(obj) {
-    return "Title: " + obj.Title + "<br>ArcNumb: " + obj.ArchNumb + "<br>NumCat: " + obj.NumbCat;
+    var template = 
+        "<div class='plan-table__title h2'>" + obj.Title + "</div>" +
+        "<div class='plan-table__meta'>" + obj.ArchNumb + "</div>" +
+        "<div class='plan-table__num'>" +  + obj.NumbCat + "</div>";
+    return template;
 }
 
 planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
         columns:[
-            { id:"plans", header:["Чертежи", { content:"textFilter", compare:oneFilter}], sort: sortByNumbCat, fillspace: true, template: cellContent }
+            { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
         ],
         select:"row",
         fixedRowHeight:false,
@@ -40,7 +44,7 @@ planTable = new webix.ui({
                 webix.delay(function () {
                     this.adjustRowHeight("plans", true);
                     this.render();
-                }, this);
+                }, this); 
             },
             onColumnResize: function () {
                 this.adjustRowHeight("plans", true);

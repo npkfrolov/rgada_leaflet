@@ -140,7 +140,7 @@ function showPopup(numCat) {
         feat = res[0];
         var popupContent =
             "<div class='object-info__title h1'>" + feat.Title + "</div>" +            
-            "<div class='object-info__meta'>Шифр:" + feat.ArchNumb + "</div>" +
+            "<div class='object-info__meta'>Шифр: " + feat.ArchNumb + "</div>" +
             "<div class='object-info__pic-wrapper'>" +
                 "<div class='object-info__num'>" + feat.NumbCat + "</div>" +
                 "<a class='object-info__pic-link' href='orig/" + feat.NumbCat + "/" + feat.NumbCat + ".jpg' target=_blank><img class='object-info__pic' src='preview/" + feat.NumbCat + "/p" + feat.NumbCat + ".jpg' width='150'></a>" +
