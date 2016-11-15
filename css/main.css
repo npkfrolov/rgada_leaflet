@@ -110,8 +110,20 @@ p{
 }
 
 #plan_table .webix_cell{
+    position: relative;
     cursor: pointer;
     height: auto !important;
+    padding-right: 76px;
+}
+
+.plan-table__num{
+    position: absolute;
+    font-size: 25px;
+    color: rgba(81, 163, 220, 0.54);
+    right: 12px;
+    top: 12px;
+    line-height: 1;
+    font-weight: bold;
 }
 
 /* Object info */
