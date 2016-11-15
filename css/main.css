@@ -285,7 +285,7 @@ p{
 .map-opacity{
     position: absolute;
     opacity: 0;
-    bottom:20px;
+    bottom:25px;
     left:0;
     right:0;
     margin-left: auto;
@@ -380,7 +380,7 @@ p{
 }
 
 .leaflet-bottom .leaflet-control{
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .leaflet-right .leaflet-control{
@@ -392,6 +392,12 @@ p{
 }
 .leaflet-bottom .leaflet-control-attribution{
     margin-bottom: 0;
+}
+
+.leaflet-bottom.leaflet-right .leaflet-control{
+    clear: none;
+    margin-bottom: 0;
+    margin-right:0;
 }
 
 .leaflet-bar{
@@ -425,6 +431,31 @@ p{
 
 .leaflet-iconLayers-layer{
     box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
+}
+
+.leaflet-container .leaflet-control-mouseposition{
+    width: 110px;
+    text-align: center;
+    box-shadow: none;
+    font-size: 11px;
+    background-color: transparent;
+    text-shadow: -1px -1px 0 rgba(255,255,255,.85), 1px -1px 0 rgba(255,255,255,.85), -1px 1px 0 rgba(255,255,255,.85), 1px 1px 0 rgba(255,255,255,.85);  
+}
+
+.leaflet-control-scale{
+    width: 90px;
+    background-color: transparent;
+    text-shadow: -1px -1px 0 rgba(255,255,255,.85), 1px -1px 0 rgba(255,255,255,.85), -1px 1px 0 rgba(255,255,255,.85), 1px 1px 0 rgba(255,255,255,.85); 
+}
+.leaflet-control-scale-line{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: transparent;
+}
+
+.leaflet-container .leaflet-control-attribution{
+    background-color: transparent;
+    text-shadow: -1px -1px 0 rgba(255,255,255,.85), 1px -1px 0 rgba(255,255,255,.85), -1px 1px 0 rgba(255,255,255,.85), 1px 1px 0 rgba(255,255,255,.85); 
 }
 
 /* My Webix */
