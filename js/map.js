@@ -18,7 +18,12 @@ addControlPlaceholders(mainMap);
 mainMap.zoomControl.setPosition('verticalcenterleft');
 
 // BaseLayers
+L.control.scale({imperial: false, position: 'bottomright'}).addTo(mainMap);
+L.control.mousePosition({position: 'bottomright'}).addTo(mainMap);
 var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
+
+
+
 
 $.ajax({
     url: point_layer_url,
