@@ -46,8 +46,9 @@ planTable = new webix.ui({
                     this.adjustRowHeight("plans", true);
                     this.render();
                     // update data for big data
-                    bigTable.data = planTable.data;
-                    bigTable.adjust();
+                    // bigTable.data = jQuery.extend(true, {}, planTable.data);
+                    // bigTable.adjustRowHeight("Title", true);
+                    // bigTable.render();
                 }, this);
             },
             onColumnResize: function () {
