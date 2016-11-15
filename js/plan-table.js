@@ -31,6 +31,7 @@ function cellContent(obj) {
 planTable = new webix.ui({
         container:"plan_table",
         view:"datatable",
+        hover:"cell-hover",
         columns:[
             { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
         ],

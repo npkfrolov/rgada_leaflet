@@ -28,12 +28,17 @@
 
 </head>
     <body>
-        <div id="big_table" style="display: none"></div>
-        <div id="plan_table"></div>
+       
+        <div class="object-list">
+            <div id="plan_table"></div>
+            <div class="object-list__footer">
+                <a href="#" data-open-modal="big_table-modal">Полная информация по чертежам</a>
+            </div>
+        </div>    
         <div class="object-info">
             <div class="object-info__content"></div>
-            <a href="#" class="js-closePopup object-info__close">
-                <svg class="object-info__close-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <a href="#" class="js-closePopup object-info__close close">
+                <svg class="close__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                     <path d="M0 0h24v24H0z" fill="none"/>
                 </svg>
@@ -49,7 +54,15 @@
                 </div>
             </div>
         </div>
-
+        <div id="big_table-modal" class="stretch-modal">
+            <a href="#" class="js-closeModal stretch-modal__close close" data-close-modal="big_table-modal">
+                <svg class="close__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                </svg>
+            </a>
+            <div id="big_table"></div>
+        </div>
         <script lang="text/javascript">
             point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/';
             polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/';
@@ -59,5 +72,6 @@
         <script src="js/map.js"></script>
         <script src="js/big-table.js"></script>
         <script src="js/plan-table.js"></script>
+        <script src="js/modal.js"></script>
     </body>
 </html>
