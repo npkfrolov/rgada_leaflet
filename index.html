@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/MarkerCluster.css" />
     <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="css/iconLayers.css" />
+    <link rel="stylesheet" href="css/leaflet.mouseposition.css" />
     <link rel="stylesheet" href="css/webix.css" />
     <link rel="stylesheet" href="css/main.css" />
 
@@ -15,6 +16,7 @@
     <script src="js/leaflet.js"></script>
     <script src="js/leaflet.markercluster.js"></script>
     <script src="js/leaflet-omnivore.min.js"></script>
+    <script src="js/leaflet.mouseposition.js"></script>
 
     <script src="js/iconLayers.js"></script>
 
@@ -26,6 +28,7 @@
 
 </head>
     <body>
+        <div id="big_table" style="display: none"></div>
         <div id="plan_table"></div>
         <div class="object-info">
             <div class="object-info__content"></div>
@@ -49,12 +52,12 @@
 
         <script lang="text/javascript">
             point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/';
-            polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1536/feature/';
-            polygon_table_url = 'http://rgada.info/nextgisweb/resource/1536/store/';
+            polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1539/feature/';
+            polygon_table_url = 'http://rgada.info/nextgisweb/resource/1539/store/';
         </script>
         <script src="js/base_layers.js"></script>
         <script src="js/map.js"></script>
+        <script src="js/big-table.js"></script>
         <script src="js/plan-table.js"></script>
-
     </body>
 </html>

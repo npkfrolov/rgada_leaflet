@@ -44,7 +44,10 @@ planTable = new webix.ui({
                 webix.delay(function () {
                     this.adjustRowHeight("plans", true);
                     this.render();
-                }, this); 
+                    // update data for big data
+                    bigTable.data = planTable.data;
+                    bigTable.adjust();
+                }, this);
             },
             onColumnResize: function () {
                 this.adjustRowHeight("plans", true);
@@ -54,8 +57,9 @@ planTable = new webix.ui({
                 var item = this.getSelectedItem();
                 zoomAndShowPopup(item.NumbCat);
             }
+
         },
         url: polygon_table_url
 });
 
-webix.event(window, "resize", function(){ planTable.adjust(); })
+webix.event(window, "resize", function(){ planTable.adjust(); });

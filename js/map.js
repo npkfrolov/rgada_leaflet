@@ -9,6 +9,7 @@ var mainMap = L.map('map').setView([55.6, 37], 8),
     overlay = null,
     overlay_hash = null,
     raster_layers = [],
+    selected_markers = [],
     centroids,
     markers;
 
@@ -17,7 +18,12 @@ addControlPlaceholders(mainMap);
 mainMap.zoomControl.setPosition('verticalcenterleft');
 
 // BaseLayers
+L.control.scale({imperial: false, position: 'bottomright'}).addTo(mainMap);
+L.control.mousePosition({position: 'bottomright'}).addTo(mainMap);
 var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
+
+
+
 
 $.ajax({
     url: point_layer_url,
@@ -70,14 +76,34 @@ function onClick(e) {
 
 function showObjectInfo(num, target){
     showPopup(num);
-    if (showGeoRaster(num)) target.options.isRasterShown = true; //TEMP
+    if (showGeoRaster(num)) target.options.isRasterShown = true;
+    highlightIcon(target);
 }
 
 function hideObjectInfo(){
     clearOvelay();
-    hideGeoRaster(); //TEMP
+    hideGeoRaster();
     hidePopup();
+    resetIcons();
 }
+
+
+function highlightIcon(feature){
+    var marker = feature._layers[Object.keys(feature._layers)[0]]; //BAD
+    selected_markers.push(marker);
+    var selIcon =new L.Icon.Default;
+    selIcon.options.iconUrl = 'marker-icon-red.png';
+    selIcon.options.iconSize = [28, 40];
+    marker.setIcon(selIcon);
+}
+
+function resetIcons(){
+    $.each(selected_markers, function(index, item){
+        item.setIcon(new L.Icon.Default());
+    });
+    selected_markers = [];
+}
+
 
 
 function checkStr(str) {
@@ -170,6 +196,9 @@ function zoomAndShowPopup(numCat) {
     if (feat) {
         var center = feat.getBounds().getCenter();
         mainMap.setView(center, 15);
+
+        var marker = feat._layers[Object.keys(feat._layers)[0]];
+        markers.zoomToShowLayer(marker);
         showObjectInfo(numCat, feat);
     }
 }
