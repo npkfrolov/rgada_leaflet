@@ -13,15 +13,18 @@
   src: url("fonts/lato-bold.eot?#iefix") format("embedded-opentype"), url("fonts/lato-bold.woff2") format("woff2"), url("fonts/lato-bold.woff") format("woff"), url("fonts/lato-bold.ttf") format("truetype"), url("fonts/lato-bold.svg#Lato") format("svg"); }s
 
 /* Layout */
-
-body {
-    padding: 0;
-    margin: 0;
-}
-
 html, body{
     height: 100vh;
-    width: 100vw;
+    width: 100vw;    
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.43;
+    font-family: "Lato", Roboto, sans-serif;
+    overflow: hidden;
 }
 
 *{
@@ -57,6 +60,130 @@ html, body{
     user-select: none; 
 }
 
+/* Typography */
+h1,.h1{
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    font-weight: bold;
+}
+
+h2, .h2{
+    font-size: 16px;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+h2:first-child, 
+.h2:first-child{
+    margin-top:0;
+}
+
+p{
+    margin-top:0;
+    margin-bottom: 12px;
+}
+
+/* Object info */
+
+.object-info{
+    position: absolute;
+    background: #fff;
+    width: 480px;
+    height: 100vh;
+    right: -480px;
+    top: 0;
+    padding: 24px;
+    box-shadow: 0 15px 20px rgba(0,0,0,0.2);
+    overflow: auto;
+    z-index: 1000;
+    transition: right .4s;
+}
+
+.object-info_active{
+    right:0;
+}
+
+.object-info__title{
+    padding-right: 40px;
+}
+
+.object-info__pic-wrapper{
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.object-info__pic-link{
+    display: block;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+    max-height: 300px;
+}
+
+.object-info__pic-link:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(255,255,255, 0.6);
+    z-index: 2;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: opacity .3s;
+}
+
+.object-info__pic-link:hover:after{
+    opacity: .8;
+}
+
+.object-info__pic{
+    width: 100%;
+    height: auto;
+    transform: scale(1.2);
+}
+
+.object-info__num{
+    position: absolute;
+    font-size: 85px;
+    right: 12px;
+    top: -36px;
+    color: #ffbe00;
+    font-weight: bold;
+    z-index: 5;
+    text-shadow: 0 3px 5px rgba(0,0,0,.12);
+    line-height: 1;
+}
+
+.object-info__meta{
+    margin-top: -18px;
+    margin-bottom: 24px;
+    color: #999;
+    font-size: 13px;
+}
+
+.object-info p{
+    margin-bottom: 6px;
+}
+
+.object-info__close{
+    position: absolute;
+    right: 8px;
+    top: 10px;
+}
+
+.object-info__close:hover .object-info__close-icon{
+    fill: #361d18;
+}
+
+.object-info__close-icon{
+    width: 24px;
+    height: 24px;
+    fill: #999;
+}
+
 /* Map content */
 .map-control{
     background-color: #fff;
@@ -69,7 +196,6 @@ html, body{
     left: 20px;
     top: 20px;
     font-size: 16px;
-    font-family: "Lato", Roboto, sans-serif;
     font-weight: bold;
     background-color: rgba(54, 29, 24, 0.77);
     color: rgba(255,255,255,.94);
