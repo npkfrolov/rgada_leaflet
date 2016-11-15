@@ -29,6 +29,33 @@ L.control.scale({imperial: false, position: 'bottomright'}).addTo(mainMap);
 L.control.mousePosition({position: 'bottomright'}).addTo(mainMap);
 var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
 
+// Menu control
+var menuControl = L.Control.extend({
+  options: {
+    position: 'topright'
+  },
+
+  onAdd: function (map) {
+    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+
+    container.innerHTML = "<a class='menu-control toggle-control active' href='#'><svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>" +
+                                "<path d='M0 0h24v24H0z' fill='none'/>" +
+                                "<path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'/>" +
+                           "</svg></a>";
+
+    $(container).find(".menu-control").on("click", function(){
+        if ($(this).hasClass("active")){
+            hideRightPanel($(".object-list"));
+        } else{
+            showRightPanel($(".object-list"));
+        }
+    });
+
+    return container;
+  }
+});
+
+mainMap.addControl(new menuControl());
 
 
 
@@ -182,12 +209,13 @@ function showPopup(numCat) {
             "<div class='h2'>Надписи на обороте</div> <p>" + checkStr(feat.TextRev)+ "</p>";
 
         popupInner.empty().html(popupContent);
-        popup.addClass("object-info_active");
+        showRightPanel(popup);
     }
 }
 
 function hidePopup() {    
     popup.removeClass("object-info_active");
+    hideRightPanel(popup);
     popupInner.empty();
 }
 
@@ -284,3 +312,33 @@ function addControlPlaceholders(map) {
     createCorner('verticalcenter', 'left');
     createCorner('verticalcenter', 'right');
 }
+
+// Right panel
+
+function showRightPanel(el){
+
+    if (!el.hasClass("active")){
+        $("body").addClass("body--withRightPanel");
+        el.addClass("active");        
+        setTimeout(function(){ mainMap.invalidateSize(); }, 400);
+    }
+}
+
+function hideRightPanel(el){
+    if (!$(".menu-control").hasClass("active")){
+        $("body").removeClass("body--withRightPanel");
+        setTimeout(function(){ mainMap.invalidateSize(); }, 400);
+    }
+
+    if (el.hasClass("active"))
+        el.removeClass("active");
+}
+
+// Custom control
+
+(function(){
+    $(".toggle-control").on("click", function(){
+        $(this).toggleClass("active");
+    })
+
+})();

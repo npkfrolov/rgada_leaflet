@@ -33,6 +33,11 @@ body{
 
 .map-container{
     position: relative;
+    margin-right:0;
+    transition: margin-right .4s;
+}
+
+.body--withRightPanel .map-container{
     margin-right: 480px;
 }
 
@@ -98,14 +103,22 @@ p{
     fill: #999;
 }
 
-.object-list{
+/* Right panel */
+
+.right-panel{
     position: absolute;
-    right:0;
+    right:-480px;
     top:0;
     height: 100vh;
     width: 480px;
     z-index:1000;
+    background-color: #fff;
     box-shadow: 0 15px 20px rgba(0,0,0,0.2);
+    transition: right .4s;
+}
+
+.right-panel.active{
+    right: 0;
 }
 
 .object-list__footer{
@@ -174,21 +187,8 @@ p{
 /* Object info */
 
 .object-info{
-    position: absolute;
-    background: #fff;
-    width: 480px;
-    height: 100vh;
-    right: -480px;
-    top: 0;
     padding: 24px;
-    box-shadow: 0 15px 20px rgba(0,0,0,0.2);
     overflow: auto;
-    z-index: 1000;
-    transition: right .4s;
-}
-
-.object-info_active{
-    right:0;
 }
 
 .object-info__title{
@@ -318,6 +318,16 @@ p{
     color: #361d18;
 }
 
+.menu-control svg{
+    width: 24px;
+    color: #361d18;
+}
+
+.toggle-control.active,
+.toggle-control.active:hover{
+    background-color: #fff2ca;
+}
+
 /* Modal */
 .stretch-modal{
     display:none;
@@ -359,6 +369,10 @@ p{
 .leaflet-verticalcenter .leaflet-control {
     margin-bottom: 10px;
     margin-top: 10px;
+}
+
+.leaflet-top .leaflet-control{
+    margin-top:20px;
 }
 
 .leaflet-left .leaflet-control{
@@ -403,6 +417,10 @@ p{
 .leaflet-bar a:last-child {
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+}
+
+.leaflet-bar a svg{
+    height: 30px;
 }
 
 .leaflet-iconLayers-layer{
