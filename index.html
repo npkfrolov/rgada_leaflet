@@ -66,9 +66,7 @@
             point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/';
             polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/';
             polygon_table_url = 'http://rgada.info/nextgisweb/resource/1542/store/';
-
-            polygon_table = fetch(polygon_table_url).then(
-                function (response) { return response.json(); });
+            polygon_table = webix.ajax(polygon_table_url);
         </script>
         <script src="js/base_layers.js"></script>
         <script src="js/map.js"></script>

@@ -2,7 +2,7 @@
  * Created by yellow on 01.11.16.
  */
 
-polygon_table.then(function (json) {
+polygon_table.then(function (response) {
     bigTable = new webix.ui({
             container:"big_table",
             view:"datatable",
@@ -48,7 +48,7 @@ polygon_table.then(function (json) {
                     zoomAndShowPopup(item.NumbCat);
                 }
             },
-            data: json
+            data: response.json()
     });
 });
 
