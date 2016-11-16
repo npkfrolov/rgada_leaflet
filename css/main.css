@@ -38,6 +38,7 @@ a{
 .map-container{
     position: relative;
     margin-right:0;
+    -webkit-transition: margin-right .4s;
     transition: margin-right .4s;
 }
 
@@ -118,6 +119,7 @@ p{
     z-index:1000;
     background-color: #fff;
     box-shadow: 0 15px 20px rgba(0,0,0,0.2);
+    -webkit-transition: right .4s;
     transition: right .4s;    
     padding: 24px;
     overflow: auto;
@@ -223,6 +225,7 @@ p{
     left: 0;
     top: 0;
     opacity: 1;
+    -webkit-transition: opacity .3s;
     transition: opacity .3s;
 }
 
@@ -233,7 +236,8 @@ p{
 .object-info__pic{
     width: 100%;
     height: auto;
-    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
 }
 
 .object-info__num{
@@ -296,6 +300,7 @@ p{
     margin-left: auto;
     margin-right: auto;
     width: 20%;
+    -webkit-transition: opacity .4s;
     transition: opacity .4s;
     z-index: 1000;
     padding: 16px;
@@ -365,7 +370,8 @@ p{
 .leaflet-verticalcenter {
     position: absolute;
     top: 47%;
-    transform: translateY(-50.5%);
+    -webkit-transform: translateY(-50.5%);
+            transform: translateY(-50.5%);
     z-index: 1000;
 }
 
@@ -606,8 +612,10 @@ p{
     font-size: 12px;
     padding: 4px 20px;
     background-color: #fff;
-    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
     right: -480px;
+    -webkit-transition: right .4s;
     transition: right .4s;
 }
 
