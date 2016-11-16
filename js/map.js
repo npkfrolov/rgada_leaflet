@@ -43,10 +43,15 @@ var menuControl = L.Control.extend({
                                 "<path d='M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z'/>" +
                            "</svg></a>";
 
-    $(container).find(".menu-control").on("click", function(){
+    $(container).find(".menu-control").on("click", function(e){
+        e.stopPropagation();
         if ($(this).hasClass("active")){
-            hideRightPanel($(".object-list"));
+            $(this).removeClass("active");
+            $(".right-panel.active").each(function(){
+                hideRightPanel($(this));
+            });            
         } else{
+            $(this).addClass("active");
             showRightPanel($(".object-list"));
         }
     });
@@ -56,6 +61,32 @@ var menuControl = L.Control.extend({
 });
 
 mainMap.addControl(new menuControl());
+
+// About control
+var aboutControl = L.Control.extend({
+  options: {
+    position: 'upperbottomright'
+  },
+
+  onAdd: function (map) {
+    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+
+    container.innerHTML = "<a class='about-control' href='#'>?</a>";
+
+    $(container).find(".about-control").on("click", function(e){
+        e.stopPropagation();
+        if ($(".about").hasClass("active")){
+            hideRightPanel($(".about"));
+        } else{
+            showRightPanel($(".about"));
+        }
+    });
+
+    return container;
+  }
+});
+
+mainMap.addControl(new aboutControl());
 
 
 
@@ -87,7 +118,10 @@ mainMap.on("click", function(e){
             hideObjectInfo();
         });
 
-$('.js-closePopup').on("click", hidePopup);
+$("[data-close-right-panel]").on("click", function(e){
+    hideRightPanel($("#"+$(this).data("close-right-panel")));
+    e.preventDefault();
+});
 
 $('#raster_opacity').on("change mousewheel", geoRasterOpacity);
 
@@ -115,13 +149,19 @@ function showObjectInfo(num, target){
     showPopup(num);
     if (showGeoRaster(num)) target.options.isRasterShown = true;
     highlightIcon(target);
+    var res = planTable.find(function (row) {
+        return row.NumbCat == num;
+    });
+    planTable.select(res[0].id);
+    planTable.showItem(res[0].id)
 }
 
 function hideObjectInfo(){
     clearOvelay();
     hideGeoRaster();
-    hidePopup();
+    hideRightPanel(popup);
     resetIcons();
+    planTable.clearSelection();
 }
 
 
@@ -213,12 +253,6 @@ function showPopup(numCat) {
     }
 }
 
-function hidePopup() {    
-    popup.removeClass("object-info_active");
-    hideRightPanel(popup);
-    popupInner.empty();
-}
-
 function zoomAndShowPopup(numCat) {
     //search point
     var feat = null;
@@ -243,6 +277,7 @@ function showGeoRaster(numCat) {
     var res = planTable.find(function (row) {
         return row.NumbCat == numCat;
     });
+
     if (res.length > 0) {
         feat = res[0];
         raster_url = feat.URL;
@@ -288,13 +323,13 @@ function geoRasterOpacity() {
 // show/hide raster opacity control
 
 function showOpacityControl() {
-    $(".map-opacity").addClass("map-opacity_active");
+    $(".map-opacity").fadeIn();
     $("#raster_opacity").val(100);
 
 }
 
 function hideOpacityControl() {
-    $(".map-opacity").removeClass("map-opacity_active");
+    $(".map-opacity").fadeOut();
 }
 
 // Create centered Control placeholders
@@ -311,13 +346,16 @@ function addControlPlaceholders(map) {
 
     createCorner('verticalcenter', 'left');
     createCorner('verticalcenter', 'right');
+    createCorner('upperbottom', 'right');
 }
 
 // Right panel
 
 function showRightPanel(el){
-
     if (!el.hasClass("active")){
+        $(".right-panel--dyn.active").each(function(){
+            hideRightPanel($(this));
+        });
         $("body").addClass("body--withRightPanel");
         el.addClass("active");        
         setTimeout(function(){ mainMap.invalidateSize(); }, 400);
@@ -327,18 +365,9 @@ function showRightPanel(el){
 function hideRightPanel(el){
     if (!$(".menu-control").hasClass("active")){
         $("body").removeClass("body--withRightPanel");
-        setTimeout(function(){ mainMap.invalidateSize(); }, 400);
+        setTimeout(function(){ mainMap.invalidateSize();}, 400);
     }
 
     if (el.hasClass("active"))
         el.removeClass("active");
 }
-
-// Custom control
-
-(function(){
-    $(".toggle-control").on("click", function(){
-        $(this).toggleClass("active");
-    })
-
-})();

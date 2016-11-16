@@ -114,11 +114,17 @@ p{
     z-index:1000;
     background-color: #fff;
     box-shadow: 0 15px 20px rgba(0,0,0,0.2);
-    transition: right .4s;
+    transition: right .4s;    
+    padding: 24px;
+    overflow: auto;
 }
 
 .right-panel.active{
     right: 0;
+}
+
+.object-list{
+    padding:0;
 }
 
 .object-list__footer{
@@ -185,11 +191,6 @@ p{
 }
 
 /* Object info */
-
-.object-info{
-    padding: 24px;
-    overflow: auto;
-}
 
 .object-info__title{
     padding-right: 40px;
@@ -284,7 +285,7 @@ p{
 
 .map-opacity{
     position: absolute;
-    opacity: 0;
+    display: none;
     bottom:25px;
     left:0;
     right:0;
@@ -296,9 +297,6 @@ p{
     padding: 16px;
 }
 
-.map-opacity_active{
-    opacity: 1;
-}
 .map-opacity__control{
     width: 100%;
     display: block;
@@ -400,6 +398,12 @@ p{
     margin-right:0;
 }
 
+.leaflet-upperbottom {
+    position: absolute;
+    bottom: 30px;
+}
+
+
 .leaflet-bar{
     box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
 }
@@ -456,6 +460,11 @@ p{
 .leaflet-container .leaflet-control-attribution{
     background-color: transparent;
     text-shadow: -1px -1px 0 rgba(255,255,255,.85), 1px -1px 0 rgba(255,255,255,.85), -1px 1px 0 rgba(255,255,255,.85), 1px 1px 0 rgba(255,255,255,.85); 
+}
+
+.about-control{
+    font-size: 17px;
+    font-weight: bold;
 }
 
 /* My Webix */
