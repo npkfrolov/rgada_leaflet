@@ -363,11 +363,12 @@ function showRightPanel(el){
 }
 
 function hideRightPanel(el){
-    if (!$(".menu-control").hasClass("active")){
-        $("body").removeClass("body--withRightPanel");
-        setTimeout(function(){ mainMap.invalidateSize();}, 400);
-    }
-
-    if (el.hasClass("active"))
+    if (el.hasClass("active")){
         el.removeClass("active");
+
+         if (!$(".menu-control").hasClass("active")){
+            $("body").removeClass("body--withRightPanel");
+            setTimeout(function(){ mainMap.invalidateSize();}, 400);
+        }
+    }
 }
