@@ -31,13 +31,11 @@ var providers = {};
     };
 
     var baseLayers = [];
-            for (var providerId in providers) {
-                baseLayers.push(providers[providerId]);
-            }
-            baseLayers.push({
-                layer: {
-                    onAdd: function() {},
-                    onRemove: function() {}
-                },
-                title: 'empty'
-            });
+    for (var providerId in providers) {
+        baseLayers.push(providers[providerId]);
+    }
+
+    baseLayers.push({
+        title: 'empty',
+        layer: L.tileLayer('')
+    });
