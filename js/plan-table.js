@@ -28,40 +28,42 @@ function cellContent(obj) {
     return template;
 }
 
-planTable = new webix.ui({
-        container:"plan_table",
-        view:"datatable",
-        hover:"cell-hover",
-        columns:[
-            { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
-        ],
-        select:"row",
-        fixedRowHeight:false,
-        rowLineHeight:25,
-        rowHeight:25,
-        scrollX:false,
-        on: {
-            onAfterLoad: function () {
-                webix.delay(function () {
+polygon_table.then(function (json) {
+    planTable = new webix.ui({
+            container:"plan_table",
+            view:"datatable",
+            hover:"cell-hover",
+            columns:[
+                { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
+            ],
+            select:"row",
+            fixedRowHeight:false,
+            rowLineHeight:25,
+            rowHeight:25,
+            scrollX:false,
+            on: {
+                onAfterLoad: function () {
+                    webix.delay(function () {
+                        this.adjustRowHeight("plans", true);
+                        this.render();
+                        // update data for big data
+                        // bigTable.data = jQuery.extend(true, {}, planTable.data);
+                        // bigTable.adjustRowHeight("Title", true);
+                        // bigTable.render();
+                    }, this);
+                },
+                onColumnResize: function () {
                     this.adjustRowHeight("plans", true);
                     this.render();
-                    // update data for big data
-                    // bigTable.data = jQuery.extend(true, {}, planTable.data);
-                    // bigTable.adjustRowHeight("Title", true);
-                    // bigTable.render();
-                }, this);
-            },
-            onColumnResize: function () {
-                this.adjustRowHeight("plans", true);
-                this.render();
-            },
-            onItemClick : function() {
-                var item = this.getSelectedItem();
-                zoomAndShowPopup(item.NumbCat);
-            }
+                },
+                onItemClick : function() {
+                    var item = this.getSelectedItem();
+                    zoomAndShowPopup(item.NumbCat);
+                }
 
-        },
-        url: polygon_table_url
+            },
+            data: json
+    });
 });
 
 webix.event(window, "resize", function(){ planTable.adjust(); });
