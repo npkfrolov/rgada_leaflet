@@ -304,6 +304,7 @@ p{
 .map-opacity__control{
     width: 100%;
     display: block;
+    padding:0;
 }
 
 .map-opacity__inner{
