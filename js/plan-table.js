@@ -1,8 +1,6 @@
 /**
  * Created by yellow on 01.11.16.
  */
-var planTable;
-
 function sortByNumbCat(a,b){
         var a = parseInt(a.NumbCat);
         var b = parseInt(b.NumbCat);
