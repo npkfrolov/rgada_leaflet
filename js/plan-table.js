@@ -10,7 +10,7 @@ function sortByNumbCat(a,b){
 
 function oneFilter(value, filter, obj){
 
-    fInt = parseInt(filter)
+    var fInt = parseInt(filter)
     if (fInt)
         if ( parseInt(obj.NumbCat)===fInt) return true;
 
@@ -46,10 +46,6 @@ polygon_table.then(function (data) {
                     webix.delay(function () {
                         this.adjustRowHeight("plans", true);
                         this.render();
-                        // update data for big data
-                        // bigTable.data = jQuery.extend(true, {}, planTable.data);
-                        // bigTable.adjustRowHeight("Title", true);
-                        // bigTable.render();
                     }, this);
                 },
                 onColumnResize: function () {
