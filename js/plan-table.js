@@ -42,6 +42,7 @@ polygon_table.then(function (data) {
             scrollX:false,
             on: {
                 onAfterLoad: function () {
+                    $(".object-list").removeClass("loading");
                     webix.delay(function () {
                         this.adjustRowHeight("plans", true);
                         this.render();
