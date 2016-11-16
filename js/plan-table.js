@@ -28,7 +28,7 @@ function cellContent(obj) {
     return template;
 }
 
-polygon_table.then(function (response) {
+polygon_table.then(function (data) {
     planTable = new webix.ui({
             container:"plan_table",
             view:"datatable",
@@ -62,7 +62,7 @@ polygon_table.then(function (response) {
                 }
 
             },
-            data: response.json()
+            data: data
     });
 });
 
