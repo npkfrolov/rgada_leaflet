@@ -31,6 +31,10 @@ body{
     box-sizing: border-box;
 }
 
+a{
+    color:#51a3dc;
+}
+
 .map-container{
     position: relative;
     margin-right:0;
@@ -589,4 +593,23 @@ p{
     padding: 4px 6px;
     height:30px;
     line-height: 30px;
+}
+
+/* NGW copyright */
+.ngw-copyright{
+    position: fixed;
+    bottom:0;
+    right:0;
+    width: 480px;
+    text-align: right;
+    font-size: 12px;
+    padding: 4px 20px;
+    background-color: #fff;
+    transform: translate3d(0,0,0);
+    right: -480px;
+    transition: right .4s;
+}
+
+.active .ngw-copyright{
+    right:0;
 }
