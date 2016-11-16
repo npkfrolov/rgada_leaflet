@@ -488,6 +488,7 @@ p{
     border-radius: 2px;
     padding-left: 12px;
     padding-right: 12px;
+    font-family: "Lato";
 }
 
 .webix_column>div, 
@@ -533,4 +534,50 @@ p{
 .webix_column>div.webix_row_select{
     color: inherit;
     background-color: #f3f3f3;
+}
+
+/* Small size table */
+.table--s {
+    font-size: 12px;
+}
+
+.table--s .webix_column>div, 
+.table--s .webix_table_cell{
+    padding: 6px 6px;
+}
+
+.table--s .webix_column>div.webix_invalid.webix_row_select:nth-child(even), 
+.table--s .webix_column>div.webix_row_select{
+    padding-top:6px;
+}
+
+.table--s .webix_column:first-child >div, 
+.table--s .webix_column:first-child .webix_table_cell{
+    padding-left: 10px;
+}
+
+.table--s .webix_column:last-child >div, 
+.table--s .webix_column:last-child .webix_table_cell{
+    padding-right: 10px;
+}
+
+.table--s .webix_hcell.webix_ss_filter{
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.table--s td:first-child .webix_hcell.webix_ss_filter{
+    padding-left: 10px;
+}
+
+.table--s td:last-child .webix_hcell.webix_ss_filter{
+    padding-right: 4px;
+}
+
+.table--s .webix_ss_filter input,
+.table--s .webix_ss_filter select{
+    font-size: 12px;
+    padding: 4px 6px;
+    height:30px;
+    line-height: 30px;
 }
