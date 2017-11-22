@@ -90,6 +90,51 @@ p{
     margin-bottom: 12px;
 }
 
+/* Forms */
+
+.checkbox{
+    cursor: pointer;
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+.checkbox [type=checkbox]{
+    display: none;
+}
+
+    .checkbox__icon{
+        position: relative;
+        top: -1px;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid #dedede;
+        border-radius: 2px;
+        vertical-align: middle;
+        margin-right: 2px;
+    }
+
+    .checkbox__label{
+        vertical-align: middle;
+    }
+
+    .checkbox:hover .checkbox__icon{
+        border-color:#ffd457;
+    }
+
+    .checkbox [type=checkbox]:checked + .checkbox__icon{
+        border-color:#dedede;
+        background-size: 12px;
+        background-image: url(../img/ic_check.svg);
+        background-position: center center;
+    }
+
+    .checkbox:hover [type=checkbox]:checked + .checkbox__icon{
+        border-color:#ffd457;
+    }
+
 /* Close */
 
 .close{
@@ -390,6 +435,9 @@ p{
 
 .leaflet-bottom .leaflet-control{
     margin-bottom: 25px;
+    float: none;
+    display: inline-block;
+    vertical-align: bottom;
 }
 
 .leaflet-right .leaflet-control{
@@ -413,7 +461,6 @@ p{
     position: absolute;
     bottom: 30px;
 }
-
 
 .leaflet-bar{
     box-shadow: 0 4px 6px rgba(50,50,93,.2),0 1px 3px rgba(0,0,0,.17);
@@ -633,4 +680,35 @@ p{
     width: 100%;
     height: 100%;
     background: url("../img/loader.svg") center center no-repeat rgba(255,255,255,.6);
+}
+
+/* Layer Control */
+.layer-control{
+    min-height: 70px;
+    padding: 12px 12px 12px 73px;
+    background-color: #fff;
+    font-size: 13px;
+    font-family: "Lato", "Roboto";
+}
+    .layer-control__layer{
+        cursor: pointer;
+        margin-top: 4px;
+    }
+
+    .layer-control__layer:first-child{
+        margin-top:0;
+    }
+
+.leaflet-iconLayers{
+    position: fixed;
+    left: 33px;
+    bottom: 38px;
+}
+    .leaflet-iconLayers-layer{
+        width: 48px;
+        height: 48px;
+    }
+
+.leaflet-control-container .leaflet-iconLayers{
+    margin:0;
 }

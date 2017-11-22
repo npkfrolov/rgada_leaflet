@@ -77,9 +77,12 @@
             <div id="big_table"></div>
         </div>
         <script lang="text/javascript">
-            point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/';
-            polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/';
-            polygon_table_url = 'http://rgada.info/nextgisweb/resource/1542/store/';
+            var point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/',
+                polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/',
+                polygon_table_url = 'http://rgada.info/nextgisweb/resource/1542/store/',
+                region_boundaries_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1088",
+                region_centers_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1087",
+                polygon_table;
 
             polygon_table = webix.ajax(polygon_table_url).then(
                 function (response) { return response.json(); });

@@ -11,8 +11,17 @@ var mainMap = L.map('map').setView([55.6, 37], 8),
     raster_layers = [],
     selected_markers = [],
     centroids,
-    markers;
-
+    markers,
+    infoLayers = [
+        {
+            name: "Административные границы",
+            layer: L.tileLayer(region_boundaries_layer_url)
+        },
+        {
+            name: "Административные центры",
+            layer: L.tileLayer(region_centers_layer_url)
+        }
+    ]
 
 var defIcon = new L.Icon.Default();
 defIcon.options.iconSize = [28, 40];
@@ -27,7 +36,14 @@ mainMap.zoomControl.setPosition('verticalcenterleft');
 // BaseLayers
 L.control.scale({imperial: false, position: 'bottomright'}).addTo(mainMap);
 L.control.mousePosition({position: 'bottomright'}).addTo(mainMap);
-var ctrl = L.control.iconLayers(baseLayers).addTo(mainMap);
+var ctrl = L.control.iconLayers(baseLayers, {
+    maxLayersInRow: 1
+}).addTo(mainMap);
+
+//Info Layers
+infoLayers.forEach(function(layer){
+    layer.layer.addTo(mainMap);
+});
 
 // Menu control
 var menuControl = L.Control.extend({
@@ -89,6 +105,44 @@ var aboutControl = L.Control.extend({
 mainMap.addControl(new aboutControl());
 
 
+// Layer control
+var layerControl = L.Control.extend({
+  options: {
+    position: 'bottomleft'
+  },
+  onAdd: function (map) {
+    var that = this,
+        container = L.DomUtil.create('div', 'leaflet-bar leaflet-control layer-control');
+    container.innerHTML = "";
+
+    this.options.layers.forEach(function(layer, index){
+        container.innerHTML += "<div class='layer-control__layer'><label class='checkbox' for='layer-" + index + "'>\
+                                 <input type='checkbox' id='layer-" + index + "' checked class='layer-checkbox'  data-layer-id='" + index + "' data-active>\
+                                 <span class='checkbox__icon'></span> <span class='checkbox__label'>" + layer.name + "</span>\
+                                </label></div>";
+    });
+
+    L.DomEvent.disableClickPropagation(container);
+
+    $(container).find(".layer-checkbox").on("click", function(e){
+        var isActive = this.hasAttribute('data-active'),
+            layerId = this.getAttribute('data-layer-id');
+
+        if (isActive){
+            mainMap.removeLayer(that.options.layers[layerId].layer)
+            this.removeAttribute('data-active');
+        }
+        else{
+            that.options.layers[layerId].layer.addTo(mainMap);
+            this.setAttribute('data-active', true);
+        }
+
+    });
+
+    return container;
+  }
+});
+mainMap.addControl(new layerControl({ layers: infoLayers }));
 
 $.ajax({
     url: point_layer_url,
@@ -340,7 +394,6 @@ function addControlPlaceholders(map) {
 
     function createCorner(vSide, hSide) {
         var className = l + vSide + ' ' + l + hSide;
-
         corners[vSide + hSide] = L.DomUtil.create('div', className, container);
     }
 
