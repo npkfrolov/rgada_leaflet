@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="vendor/iconLayers/iconLayers.css" />
     <link rel="stylesheet" href="vendor/leaflet/leaflet.mouseposition.css" />
     <link rel="stylesheet" href="vendor/webix/webix.css" />
+    <link rel="stylesheet" href="vendor/nouislider/nouislider.min.css"/>
     <link rel="stylesheet" href="css/main.css" />
 
 
@@ -29,11 +30,13 @@
 </head>
     <body class="body--withRightPanel">
         <div class="object-list right-panel active loading">
-            <div id="plan_table"></div>
+            <div id="vue-app">
+                <plans ref="plans"></plans>
+            </div>           
             <div class="object-list__footer">
                 <a href="#" data-open-modal="big_table-modal">Полная информация по чертежам</a>
             </div>
-        </div>    
+        </div>  
         <div id="object-info-right-panel" class="object-info right-panel right-panel--dyn">
             <div class="object-info__content"></div>
             <a href="#" class="close" data-close-right-panel="object-info-right-panel">
@@ -76,21 +79,94 @@
             </a>
             <div id="big_table"></div>
         </div>
+
+        <!-- right panel with plans template -->
+        <script id="plansPanelTemplate" type="text/x-template">
+            <div class="plans-panel" :class="{'plans-panel--withFilter': filterShown }">
+                <div class="plans-panel__search">
+                    <search @search:changed = "searchQuery = $event"></search>
+                    <div class="plans-panel__filter-icon filter-icon"
+                         @click = "filterShown = !filterShown" >
+                        <img class="filter-icon__pic" src="img/date-range-icon.svg" alt="Фильтр">
+                        <img v-if="filterShown" class="filter-icon__close-pic" src="img/close-small_2x.png" alt="Закрыть">
+                    </div>
+                </div>
+                <filter-panel class="plans-panel__filter"
+                              v-show = "filterShown"
+                              @filter:changed = "periodQuery = $event"
+                              ref = "filter"></filter-panel>
+                <plans-list :items="sortedItems"
+                            :activeItemNum="activeItemNum"
+                            @planIsClicked="activatePlan($event)"></plans-list>
+            </div>
+        </script>
+
+        <!-- plans list template -->
+        <script id="plansListTemplate" type="text/x-template">
+            <div class="plans-list">
+                <div v-for="plan in items"
+                     class="plan-item" :class="{'plan-item--active': activeItemNum == plan.NumbCat}"
+                     :ref="plan.NumbCat"
+                     @click = "$emit('planIsClicked', plan)">
+                    <div class="plan-item__title h2">{{plan.Title}}</div>
+                    <div class="plan-item__meta">{{plan.ArchNumb}}</div>
+                    <div class="plan-item__num">{{plan.NumbCat}}</div>
+                </div>
+            </div>
+        </script>
+
+        <!-- search template -->
+        <script id="searchTemplate" type="text/x-template">
+            <div class="search">
+                <input class="search__input form-control" type="search" placeholder="Искать чертеж"
+                       v-model="searchQuery"
+                       @input="$emit('search:changed', searchQuery)">
+            </div>
+        </script>
+
+        <!-- filter template -->
+        <script id="filterPanelTemplate" type="text/x-template">
+            <div class="filter-panel">
+                <div class="slider">
+                    <div class="slider__values">
+                        <span class="slider__value" id="period-value-1" value="1500">1500</span> — <span class="slider__value" id="period-value-2" value="1500">1700</span>
+                    </div>
+                    <div class="slider__control" id="period-control"></div>
+                    <div class="slider__pips">
+                        <span class="slider__pip slider__pip--1">1500</span>
+                        <span class="slider__pip slider__pip--2">1600</span>
+                        <span class="slider__pip slider__pip--3">1700</span>
+                    </div>
+                </div>
+            </div>
+        </script>
+
         <script lang="text/javascript">
             var point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/',
                 polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/',
                 polygon_table_url = 'http://rgada.info/nextgisweb/resource/1542/store/',
                 region_boundaries_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1088",
                 region_centers_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1087",
-                polygon_table;
+                get_plans_data,
+                plans_data;
 
-            polygon_table = webix.ajax(polygon_table_url).then(
-                function (response) { return response.json(); });
+            function getPlanByNum(num){
+                return plans_data.filter(function(plan){
+                    return plan.NumbCat == num;
+                }, this)[0];
+            }
+
+            get_plans_data = webix.ajax(polygon_table_url)
+                .then(function (response) { return response.json(); })
+                .then(function (data) { plans_data = data });
         </script>
+
+        <script src="vendor/vue/vue.js"></script>
+        <script src="vendor/nouislider/nouislider.min.js"></script>
         <script src="js/base_layers.js"></script>
         <script src="js/map.js"></script>
         <script src="js/big-table.js"></script>
-        <script src="js/plan-table.js"></script>
+        <script src="js/plans.js"></script>
         <script src="js/modal.js"></script>
     </body>
 </html>

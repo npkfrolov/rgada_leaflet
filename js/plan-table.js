@@ -27,39 +27,39 @@ function cellContent(obj) {
     return template;
 }
 
-polygon_table.then(function (data) {
-    planTable = new webix.ui({
-            container:"plan_table",
-            view:"datatable",
-            hover:"cell-hover",
-            columns:[
-                { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
-            ],
-            select:"row",
-            fixedRowHeight:false,
-            rowLineHeight:25,
-            rowHeight:25,
-            scrollX:false,
-            on: {
-                onAfterLoad: function () {
-                    $(".object-list").removeClass("loading");
-                    webix.delay(function () {
-                        this.adjustRowHeight("plans", true);
-                        this.render();
-                    }, this);
-                },
-                onColumnResize: function () {
-                    this.adjustRowHeight("plans", true);
-                    this.render();
-                },
-                onItemClick : function() {
-                    var item = this.getSelectedItem();
-                    zoomAndShowPopup(item.NumbCat);
-                }
+// polygon_table.then(function (data) {
+//     planTable = new webix.ui({
+//             container:"plan_table",
+//             view:"datatable",
+//             hover:"cell-hover",
+//             columns:[
+//                 { id:"plans", header: { content:"textFilter", compare:oneFilter, placeholder: "Искать чертеж", height: "68"}, sort: sortByNumbCat, fillspace: true, template: cellContent }
+//             ],
+//             select:"row",
+//             fixedRowHeight:false,
+//             rowLineHeight:25,
+//             rowHeight:25,
+//             scrollX:false,
+//             on: {
+//                 onAfterLoad: function () {
+//                     $(".object-list").removeClass("loading");
+//                     webix.delay(function () {
+//                         this.adjustRowHeight("plans", true);
+//                         this.render();
+//                     }, this);
+//                 },
+//                 onColumnResize: function () {
+//                     this.adjustRowHeight("plans", true);
+//                     this.render();
+//                 },
+//                 onItemClick : function() {
+//                     var item = this.getSelectedItem();
+//                     zoomAndShowPopup(item.NumbCat);
+//                 }
 
-            },
-            data: data
-    });
-});
+//             },
+//             data: data
+//     });
+// });
 
 webix.event(window, "resize", function(){ planTable.adjust(); });

@@ -195,19 +195,16 @@ function onMouseOut(e) {
 }
 
 function onClick(e) {
-    hideObjectInfo();
-    showObjectInfo(this.feature.properties.NumbCat, e.target);
+    var result = getPlanByNum(this.feature.properties.NumbCat);
+    showObjectInfo(result, e.target);
+    Vue.set(vueApp.$refs.plans, "activeItemNum", this.feature.properties.NumbCat);
 }
 
-function showObjectInfo(num, target){
-    showPopup(num);
-    if (showGeoRaster(num)) target.options.isRasterShown = true;
+function showObjectInfo(plan, target){  
+    hideObjectInfo();
+    showPopup(plan);
+    if (showGeoRaster(plan.URL)) target.options.isRasterShown = true;
     highlightIcon(target);
-    var res = planTable.find(function (row) {
-        return row.NumbCat == num;
-    });
-    planTable.select(res[0].id);
-    planTable.showItem(res[0].id)
 }
 
 function hideObjectInfo(){
@@ -215,7 +212,7 @@ function hideObjectInfo(){
     hideGeoRaster();
     hideRightPanel(popup);
     resetIcons();
-    planTable.clearSelection();
+    Vue.set(vueApp.$refs.plans, "activeItemNum", undefined);
 }
 
 
@@ -248,14 +245,11 @@ function clearOvelay() {
 }
 
 function showDrawingExtent(NumbCat, op_overlay_hash) {
-    // search in table
-    var res = planTable.find(function(row){
-        return row.NumbCat == NumbCat;
-    });
-    var op_overlay_hash = op_overlay_hash;
-    if(res.length>0) {
-        feat = res[0];
-        polygon_id = feat.id;
+    var res = getPlanByNum(NumbCat),
+        op_overlay_hash = op_overlay_hash;
+
+    if(res) {
+        polygon_id = res.id;
         url = polygon_layer_url + polygon_id;
 
         $.ajax({
@@ -267,7 +261,6 @@ function showDrawingExtent(NumbCat, op_overlay_hash) {
                 crs3857 = new L.Proj.CRS('EPSG:3857');
 
                 var customLayer = L.geoJson(null, {
-                    // http://leafletjs.com/reference.html#geojson-style
                     style: function(feature) {
                         return { color: '#f00' };
                     },
@@ -285,33 +278,28 @@ function showDrawingExtent(NumbCat, op_overlay_hash) {
     }
 }
 
-function showPopup(numCat) {
-    // search in table
-    var res = planTable.find(function (row) {
-        return row.NumbCat == numCat;
-    });
-    if (res.length > 0) {
-        feat = res[0];
+function showPopup(plan) {
+    if (plan) {
         var popupContent =
-            "<div class='object-info__title h1'>" + feat.Title + "</div>" +            
-            "<div class='object-info__meta'>Шифр: " + feat.ArchNumb + "</div>" +
+            "<div class='object-info__title h1'>" + plan.Title + "</div>" +            
+            "<div class='object-info__meta'>Шифр: " + plan.ArchNumb + "</div>" +
             "<div class='object-info__pic-wrapper'>" +
-                "<div class='object-info__num'>" + feat.NumbCat + "</div>" +
-                "<a class='object-info__pic-link' href='orig/" + feat.NumbCat + "/" + feat.NumbCat + ".jpg' target=_blank><img class='object-info__pic' src='preview/" + feat.NumbCat + "/p" + feat.NumbCat + ".jpg' width='150'></a>" +
+                "<div class='object-info__num'>" + plan.NumbCat + "</div>" +
+                "<a class='object-info__pic-link' href='orig/" + plan.NumbCat + "/" + plan.NumbCat + ".jpg' target=_blank><img class='object-info__pic' src='preview/" + plan.NumbCat + "/p" + plan.NumbCat + ".jpg' width='150'></a>" +
             "</div>" +
-            "<div class='h2'>Надписи</div> <p>" + feat.Text + "</p>" +
-            "<div class='h2'>Надписи на обороте</div> <p>" + checkStr(feat.TextRev)+ "</p>";
+            "<div class='h2'>Надписи</div> <p>" + plan.Text + "</p>" +
+            "<div class='h2'>Надписи на обороте</div> <p>" + checkStr(plan.TextRev)+ "</p>";
 
         popupInner.empty().html(popupContent);
         showRightPanel(popup);
     }
 }
 
-function zoomAndShowPopup(numCat) {
+function zoomAndShowPopup(plan) {
     //search point
     var feat = null;
     centroids.eachLayer(function (layer) {
-        if ( layer.feature.properties.NumbCat.toString() == numCat) { //TODO: remove .toString();
+        if ( layer.feature.properties.NumbCat == plan.NumbCat) { 
             feat = layer;
             return;
         }
@@ -322,33 +310,23 @@ function zoomAndShowPopup(numCat) {
 
         var marker = feat._layers[Object.keys(feat._layers)[0]];
         markers.zoomToShowLayer(marker);
-        showObjectInfo(numCat, feat);
+        showObjectInfo(plan, feat);
     }
 }
 
-function showGeoRaster(numCat) {
-// search in table
-    var res = planTable.find(function (row) {
-        return row.NumbCat == numCat;
+function showGeoRaster(raster_url) {
+    if (!raster_url || raster_url.length === 0 || /^\s*$/.test(raster_url))
+        return;
+
+    raster_layer = L.tileLayer(raster_url, {
+        maxZoom: 20,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">Rgada</a>'
     });
+    raster_layer.addTo(mainMap);
+    raster_layers.push(raster_layer);
+    showOpacityControl();
 
-    if (res.length > 0) {
-        feat = res[0];
-        raster_url = feat.URL;
-
-        if (!raster_url || raster_url.length === 0 || /^\s*$/.test(raster_url))
-            return;
-
-        raster_layer = L.tileLayer(raster_url, {
-            maxZoom: 20,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">Rgada</a>'
-        });
-        raster_layer.addTo(mainMap);
-        raster_layers.push(raster_layer);
-        showOpacityControl();
-    }
-
-    return res.length;
+    return true;
 }
 
 

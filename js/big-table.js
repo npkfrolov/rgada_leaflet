@@ -2,7 +2,7 @@
  * Created by yellow on 01.11.16.
  */
 
-polygon_table.then(function (data) {
+get_plans_data.then(function () {
     bigTable = new webix.ui({
             container:"big_table",
             view:"datatable",
@@ -45,10 +45,11 @@ polygon_table.then(function (data) {
                 onItemClick : function() {
                     var item = this.getSelectedItem();
                     $("#big_table-modal").fadeOut();
-                    zoomAndShowPopup(item.NumbCat);
+                    zoomAndShowPopup(item);
+                    Vue.set(vueApp.$refs.plans, "activeItemNum", item.NumbCat);
                 }
             },
-            data: data
+            data: plans_data
     });
 });
 
