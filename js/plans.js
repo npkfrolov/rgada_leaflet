@@ -77,8 +77,11 @@ Vue.component('plans-list', {
         "activeItemNum"
     ],
     watch: {
+        items: function(value){
+            this.$el.scrollTop = 0;
+        },
         activeItemNum: function(value){
-            if (value)
+            if (value && this.$refs[value][0])
                 this.$el.scrollTop = this.$refs[value][0].offsetTop - (this.$el.clientHeight - this.$refs[value][0].offsetHeight)/2;
         }
     }
