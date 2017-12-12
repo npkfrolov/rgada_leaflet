@@ -93,7 +93,8 @@
                 </div>
                 <filter-panel class="plans-panel__filter"
                               v-show = "filterShown"
-                              @filter:changed = "periodQuery = $event"
+                              :periodRange = "itemsDateRange"
+                              @filter:changed = "filterShown ? periodQuery = $event : ''"
                               ref = "filter"></filter-panel>
                 <plans-list :items="sortedItems"
                             :activeItemNum="activeItemNum"
@@ -104,14 +105,16 @@
         <!-- plans list template -->
         <script id="plansListTemplate" type="text/x-template">
             <div class="plans-list">
-                <div v-for="plan in items"
+                <div v-for="plan in itemsComputed"
                      class="plan-item" :class="{'plan-item--active': activeItemNum == plan.NumbCat}"
                      :ref="plan.NumbCat"
                      @click = "$emit('planIsClicked', plan)">
                     <div class="plan-item__title h2">{{plan.Title}}</div>
-                    <div class="plan-item__meta">{{plan.ArchNumb}}</div>
+                    <div class="plan-item__meta">{{plan.ArchNumb}}{{ plan.date ? ', ' + plan.date : '' }}</div>
                     <div class="plan-item__num">{{plan.NumbCat}}</div>
                 </div>
+
+                <div v-if="!itemsComputed.length" class="plan-item plan-item--noresult">Ничего не найдено</div>
             </div>
         </script>
 
@@ -129,13 +132,13 @@
             <div class="filter-panel">
                 <div class="slider">
                     <div class="slider__values">
-                        <span class="slider__value" id="period-value-1" value="1500">1500</span> — <span class="slider__value" id="period-value-2" value="1500">1700</span>
+                        <span class="slider__value" id="period-value-1">{{ periodRangeComputed.min }}</span> — <span class="slider__value" id="period-value-2">{{ periodRangeComputed.max }}</span>
                     </div>
-                    <div class="slider__control" id="period-control"></div>
+                    <div class="slider__control" ref="periodControl"></div>
                     <div class="slider__pips">
-                        <span class="slider__pip slider__pip--1">1500</span>
-                        <span class="slider__pip slider__pip--2">1600</span>
-                        <span class="slider__pip slider__pip--3">1700</span>
+                        <span class="slider__pip slider__pip--1">{{ periodRangeComputed.min }}</span>
+                        <span class="slider__pip slider__pip--2">{{ Math.round((periodRangeComputed.min + periodRangeComputed.max)/2) }} </span>
+                        <span class="slider__pip slider__pip--3">{{ periodRangeComputed.max }}</span>
                     </div>
                 </div>
             </div>

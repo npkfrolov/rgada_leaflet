@@ -6,7 +6,11 @@ Vue.component('plans', {
             searchQuery: "",
             periodQuery: undefined,
             activeItemNum: undefined,
-            filterShown: false
+            filterShown: false,
+            itemsDateRange: {
+                min: undefined,
+                max: undefined
+            }
         }
     },
     computed: {
@@ -60,12 +64,39 @@ Vue.component('plans', {
         get_plans_data.then(function (data) {
             $(".object-list").removeClass("loading");
             that.items = plans_data;
+            that.getItemsDateRange();
         });
     },
     methods: {
-        activatePlan(plan){
+        activatePlan: function(plan){
             this.activeItemNum = plan.NumbCat;
             zoomAndShowPopup(plan);
+        },
+        getItemsDateRange: function(){
+            var dateLowArray,
+                dateUpArray,
+                dateTotalArray;
+
+            if (this.items.length){
+                dateLowArray = this.items.map(function(item){
+                    return item.DateLow;
+                }).filter(function(item){
+                    return item
+                });
+
+                dateUpArray = this.items.map(function(item){
+                    return item.DateUpp;
+                }).filter(function(item){
+                    return item
+                });
+
+                dateTotalArray = dateLowArray.concat(dateUpArray);
+
+                this.itemsDateRange = {
+                    min: Math.min.apply(Math, dateTotalArray),
+                    max: Math.max.apply(Math, dateTotalArray),
+                }
+            }
         }
     }
 });
@@ -76,6 +107,22 @@ Vue.component('plans-list', {
         "items",
         "activeItemNum"
     ],
+    computed: {
+        itemsComputed:  function(){
+           return this.items.map(function(item){
+                var date;
+                if (item.DateUpp && item.DateLow){
+                    date = item.DateLow + " – " + item.DateUpp;
+                } else if (item.DateLow){
+                    date = "позже " + item.DateLow;
+                } else if (item.DateUpp){
+                    date = "до " + item.DateUpp;
+                }
+                item.date = date;
+                return item
+           }); 
+        } 
+    },
     watch: {
         items: function(value){
             this.$el.scrollTop = 0;
@@ -98,33 +145,52 @@ Vue.component('search', {
 
 Vue.component('filter-panel', {
     template: '#filterPanelTemplate',
+    props: [
+        "periodRange"
+    ],
     data: function(){
         return{
-            period: [1500, 1700]
+            period: [1500, 1700],
+            periodControl: undefined,
+            defaultPeriodRange:{
+                min: 1500,
+                max: 1700
+            }
+        }
+    },
+    computed: {
+        periodRangeComputed: function(){            
+            return {
+                min: this.periodRange.min || this.defaultPeriodRange.min,
+                max: this.periodRange.max || this.defaultPeriodRange.max
+            }
         }
     },
     watch: {
         period: function(value){
             this.$emit("filter:changed", value)
+        },
+        periodRangeComputed: function(value){
+            this.period = [value.min, value.max];
+            if (this.$refs.periodControl) this.updateSlider(value);
         }
     },
     mounted: function(){
         var that = this,
-            periodControl = document.getElementById('period-control'),
             periodControlValue1 = document.getElementById('period-value-1'),
             periodControlValue2 = document.getElementById('period-value-2');
 
-        noUiSlider.create(periodControl, {
-            start: that.period,
+        noUiSlider.create(that.$refs.periodControl, {
+            start: [that.periodRangeComputed.min, that.periodRangeComputed.max],
             connect: true,
             range: {
-                'min': 1500,
-                'max': 1700
+                'min': that.periodRangeComputed.min,
+                'max': that.periodRangeComputed.max
             },
             step: 1
         });
 
-        periodControl.noUiSlider.on('update', function( values, handle ) {
+        that.$refs.periodControl.noUiSlider.on('update', function( values, handle ) {
             var value = values[handle];
             if (handle) {
                 periodControlValue2.innerHTML = Math.round(value);
@@ -133,9 +199,22 @@ Vue.component('filter-panel', {
             }
         });
 
-        periodControl.noUiSlider.on('change', function( values, handle ) {
+        that.$refs.periodControl.noUiSlider.on('change', function( values, handle ) {
             that.period = values;
         });
+    },
+    methods: {
+        updateSlider: function(range){
+            var that = this;
+
+            this.$refs.periodControl.noUiSlider.updateOptions({
+                start: [that.period.min || range.min, that.period.max || range.max],
+                range: {
+                    'min': range.min,
+                    'max': range.max
+                }
+            });
+        }
     }
 });
 

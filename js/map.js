@@ -280,7 +280,18 @@ function showDrawingExtent(NumbCat, op_overlay_hash) {
 
 function showPopup(plan) {
     if (plan) {
-        var popupContent =
+        var date = "",
+            popupContent;
+          
+        if (plan.DateUpp && plan.DateLow){
+            date = plan.DateLow + " – " + plan.DateUpp;
+        } else if (plan.DateLow){
+            date = "позже " + plan.DateLow;
+        } else if (plan.DateUpp){
+            date = "до " + plan.DateUpp;
+        }
+
+        popupContent =
             "<div class='object-info__title h1'>" + plan.Title + "</div>" +            
             "<div class='object-info__meta'>Шифр: " + plan.ArchNumb + "</div>" +
             "<div class='object-info__pic-wrapper'>" +
@@ -289,6 +300,8 @@ function showPopup(plan) {
             "</div>" +
             "<div class='h2'>Надписи</div> <p>" + plan.Text + "</p>" +
             "<div class='h2'>Надписи на обороте</div> <p>" + checkStr(plan.TextRev)+ "</p>";
+
+        if (date) popupContent += "<div class='h2'>Годы</div> <p>" + date + "</p>";
 
         popupInner.empty().html(popupContent);
         showRightPanel(popup);

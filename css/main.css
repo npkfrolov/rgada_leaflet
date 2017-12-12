@@ -256,6 +256,15 @@ p{
         font-weight: bold;
     }
 
+    .plan-item--noresult{
+        border-bottom: 0;
+        cursor: default
+    }
+
+    .plan-item--noresult:hover{
+        background-color: inherit;
+    }
+
     .plans-panel__search{
         position: absolute;
         left:0;
