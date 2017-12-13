@@ -61,14 +61,15 @@
             <div class="ngw-copyright">Работает на <a href="http://nextgis.ru/nextgis-web/" target="_blank">NextGIS Web</a></div>
         </div>
         <div class="map-container">
-            <div id="map" class="map"></div>
-            <h1 class="map-title">Чертежи Русского государства XVI-XVII вв.</h1>
-            <div class="map-opacity map-control">
-                <div class="map-opacity__inner">
-                    <span class="map-opacity__icon fa fa-adjust"></span>
-                    <input class="map-opacity__control" id="raster_opacity" type="range" min="30" max="100" step="1" value="100">
+            <div id="map" class="map">                
+                <div class="map-opacity map-control leaflet-bar">
+                    <div class="map-opacity__inner">
+                        <span class="map-opacity__icon fa fa-adjust"></span>
+                        <input class="map-opacity__control" id="raster_opacity" type="range" min="30" max="100" step="1" value="100">
+                    </div>
                 </div>
             </div>
+            <h1 class="map-title">Чертежи Русского государства XVI-XVII вв.</h1>
         </div>
         <div id="big_table-modal" class="stretch-modal">
             <a href="#" class="js-closeModal stretch-modal__close close" data-close-modal="big_table-modal">
@@ -98,7 +99,7 @@
                               ref = "filter"></filter-panel>
                 <plans-list :items="sortedItems"
                             :activeItemNum="activeItemNum"
-                            @planIsClicked="activatePlan($event)"></plans-list>
+                            @planIsClicked="activatePlan($event)"></plans-list> 
             </div>
         </script>
 
@@ -132,7 +133,8 @@
             <div class="filter-panel">
                 <div class="slider">
                     <div class="slider__values">
-                        <span class="slider__value" id="period-value-1">{{ periodRangeComputed.min }}</span> — <span class="slider__value" id="period-value-2">{{ periodRangeComputed.max }}</span>
+                        <span class="slider__value" id="period-value-1">{{ Math.round(period[0]) }}</span> —
+                        <span class="slider__value" id="period-value-2">{{ Math.round(period[1]) }}</span>
                     </div>
                     <div class="slider__control" ref="periodControl"></div>
                     <div class="slider__pips">
@@ -164,7 +166,7 @@
                 .then(function (data) { plans_data = data });
         </script>
 
-        <script src="vendor/vue/vue.js"></script>
+        <script src="vendor/vue/vue.min.js"></script>
         <script src="vendor/nouislider/nouislider.min.js"></script>
         <script src="js/base_layers.js"></script>
         <script src="js/map.js"></script>

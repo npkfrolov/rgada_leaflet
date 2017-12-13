@@ -405,11 +405,11 @@ p{
     right:0;
     margin-left: auto;
     margin-right: auto;
-    width: 20%;
+    width: 15%;
     -webkit-transition: opacity .4s;
     transition: opacity .4s;
     z-index: 1000;
-    padding: 16px;
+    padding: 8px 12px;
 }
 
 .map-opacity__control{
@@ -420,7 +420,8 @@ p{
 
 .map-opacity__inner{
     position: relative;
-    padding-left: 30px;
+    padding-left: 24px;
+    margin-left: -1px;
 }
 
 .map-opacity__icon{
@@ -430,6 +431,18 @@ p{
     font-size: 18px;
     margin-top: -9px;
     color: #361d18;
+}
+
+@media (max-width: 1280px){
+    .map-opacity{
+        left: auto;
+        right: 61px;
+        bottom: 71px;
+        transform: rotate(90deg);
+        transform-origin: right bottom;
+        width: 200px;
+
+    }
 }
 
 .menu-control svg{
@@ -520,7 +533,7 @@ p{
 
 .leaflet-upperbottom {
     position: absolute;
-    bottom: 30px;
+    bottom: 25px;
 }
 
 .leaflet-bar{

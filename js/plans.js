@@ -167,18 +167,13 @@ Vue.component('filter-panel', {
         }
     },
     watch: {
-        period: function(value){
-            this.$emit("filter:changed", value)
-        },
         periodRangeComputed: function(value){
             this.period = [value.min, value.max];
             if (this.$refs.periodControl) this.updateSlider(value);
         }
     },
     mounted: function(){
-        var that = this,
-            periodControlValue1 = document.getElementById('period-value-1'),
-            periodControlValue2 = document.getElementById('period-value-2');
+        var that = this;
 
         noUiSlider.create(that.$refs.periodControl, {
             start: [that.periodRangeComputed.min, that.periodRangeComputed.max],
@@ -191,16 +186,12 @@ Vue.component('filter-panel', {
         });
 
         that.$refs.periodControl.noUiSlider.on('update', function( values, handle ) {
-            var value = values[handle];
-            if (handle) {
-                periodControlValue2.innerHTML = Math.round(value);
-            } else {
-                periodControlValue1.innerHTML = Math.round(value);
-            }
+            that.period = values;
         });
 
         that.$refs.periodControl.noUiSlider.on('change', function( values, handle ) {
             that.period = values;
+            that.$emit("filter:changed", that.period)
         });
     },
     methods: {

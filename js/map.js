@@ -178,6 +178,7 @@ $("[data-close-right-panel]").on("click", function(e){
 });
 
 $('#raster_opacity').on("change mousewheel", geoRasterOpacity);
+L.DomEvent.disableClickPropagation($('.map-opacity')[0]);
 
 
 function onMouseOver(e) {
