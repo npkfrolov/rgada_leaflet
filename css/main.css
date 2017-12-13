@@ -303,6 +303,9 @@ p{
     }
 
 /* Object info */
+.object-info__content{
+    padding-bottom: 24px;
+}
 
 .object-info__title{
     padding-right: 40px;
