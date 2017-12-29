@@ -21,13 +21,17 @@ var mainMap = L.map('map').setView([55.6, 37], 8),
             name: "Административные центры",
             layer: L.tileLayer(region_centers_layer_url)
         }
-    ]
-
-var defIcon = new L.Icon.Default();
-defIcon.options.iconSize = [28, 40];
-var selIcon = new L.Icon.Default();
-selIcon.options.iconUrl = 'marker-icon-red.png';
-selIcon.options.iconSize = [28, 40];
+    ],
+    defIcon =  L.icon({
+        iconUrl: './img/leaflet/marker-icon.png',
+        iconSize: [28, 40],
+        iconAnchor: [13, 40]
+    }),
+    selIcon =  L.icon({
+        iconUrl: './img/leaflet/marker-icon-red.png',
+        iconSize: [28, 40],
+        iconAnchor: [13, 40]
+    });
 
 // Change the position of the Zoom Control to a newly created placeholder.
 addControlPlaceholders(mainMap);
