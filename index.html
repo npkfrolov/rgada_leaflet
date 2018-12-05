@@ -150,8 +150,10 @@
             var point_layer_url = 'http://rgada.info/nextgisweb/resource/891/geojson/',
                 polygon_layer_url = 'http://rgada.info/nextgisweb/api/resource/1542/feature/',
                 polygon_table_url = 'http://rgada.info/nextgisweb/resource/1542/store/',
-                region_boundaries_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1088",
-                region_centers_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1087",
+                // region_boundaries_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1088",
+                region_boundaries_layer_url = 'http://rgada.info/nextgisweb/resource/1041/geojson/',
+                // region_centers_layer_url = "http://histgeo.nextgis.com/api/component/render/tile?x={x}&y={y}&z={z}&resource=1087",
+                region_centers_layer_url = 'http://rgada.info/nextgisweb/resource/1043/geojson/',
                 get_plans_data,
                 plans_data;
 
@@ -169,8 +171,8 @@
         <script src="vendor/vue/vue.min.js"></script>
         <script src="vendor/nouislider/nouislider.min.js"></script>
         <script src="js/base_layers.js"></script>
-        <script src="js/map.js"></script>
         <script src="js/big-table.js"></script>
+        <script src="js/map.js"></script>
         <script src="js/plans.js"></script>
         <script src="js/modal.js"></script>
     </body>

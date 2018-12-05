@@ -46,7 +46,7 @@ Vue.component('plans', {
                 if (parseInt(a.NumbCat) < parseInt(b.NumbCat)) return -1;
                 if (parseInt(a.NumbCat) > parseInt(b.NumbCat)) return 1;
                 return 0;
-            })
+            });
         }
     },
     watch:{
