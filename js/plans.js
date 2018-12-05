@@ -1,6 +1,6 @@
 Vue.component('plans', {
     template: '#plansPanelTemplate',
-    data: function(){
+    data: function () {
         return {
             items: [],
             searchQuery: "",
@@ -14,25 +14,25 @@ Vue.component('plans', {
         }
     },
     computed: {
-        sortedItems: function(){
+        sortedItems: function () {
             var filteredItems = this.items,
                 searchQuery = this.searchQuery.toLowerCase();
 
-            if (this.searchQuery){
-                filteredItems = filteredItems.filter(function(item){
+            if (this.searchQuery) {
+                filteredItems = filteredItems.filter(function (item) {
 
-                    var totalString = item.NumbCat.toLowerCase() + " " + item.ArchNumb.toLowerCase() + " " + item.Title.toLowerCase();                    
-                    return (totalString.indexOf(searchQuery)>-1);
+                    var totalString = item.NumbCat.toLowerCase() + " " + item.ArchNumb.toLowerCase() + " " + item.Title.toLowerCase();
+                    return (totalString.indexOf(searchQuery) > -1);
 
                 }, this);
             }
 
-            if (this.periodQuery){   
+            if (this.periodQuery) {
 
-                filteredItems = filteredItems.filter(function(item){
+                filteredItems = filteredItems.filter(function (item) {
                     var isMatched = false;
 
-                    if ((item.DateLow && item.DateLow >= this.periodQuery[0] && item.DateLow <= this.periodQuery[1]) 
+                    if ((item.DateLow && item.DateLow >= this.periodQuery[0] && item.DateLow <= this.periodQuery[1])
                         || (item.DateUpp && item.DateUpp >= this.periodQuery[0] && item.DateUpp <= this.periodQuery[1])) {
                         isMatched = true;
                     }
@@ -42,15 +42,15 @@ Vue.component('plans', {
 
             }
 
-            return filteredItems.sort(function(a,b){
+            return filteredItems.sort(function (a, b) {
                 if (parseInt(a.NumbCat) < parseInt(b.NumbCat)) return -1;
                 if (parseInt(a.NumbCat) > parseInt(b.NumbCat)) return 1;
                 return 0;
             });
         }
     },
-    watch:{
-        filterShown: function(value){
+    watch: {
+        filterShown: function (value) {
             if (!value) {
                 this.periodQuery = undefined;
             } else {
@@ -58,7 +58,7 @@ Vue.component('plans', {
             }
         }
     },
-    mounted: function(){
+    mounted: function () {
         var that = this;
 
         get_plans_data.then(function (data) {
@@ -68,25 +68,25 @@ Vue.component('plans', {
         });
     },
     methods: {
-        activatePlan: function(plan){
+        activatePlan: function (plan) {
             this.activeItemNum = plan.NumbCat;
             zoomAndShowPopup(plan);
         },
-        getItemsDateRange: function(){
+        getItemsDateRange: function () {
             var dateLowArray,
                 dateUpArray,
                 dateTotalArray;
 
-            if (this.items.length){
-                dateLowArray = this.items.map(function(item){
+            if (this.items.length) {
+                dateLowArray = this.items.map(function (item) {
                     return item.DateLow;
-                }).filter(function(item){
+                }).filter(function (item) {
                     return item
                 });
 
-                dateUpArray = this.items.map(function(item){
+                dateUpArray = this.items.map(function (item) {
                     return item.DateUpp;
-                }).filter(function(item){
+                }).filter(function (item) {
                     return item
                 });
 
@@ -108,36 +108,37 @@ Vue.component('plans-list', {
         "activeItemNum"
     ],
     computed: {
-        itemsComputed:  function(){
-           return this.items.map(function(item){
+        itemsComputed: function () {
+            return this.items.map(function (item) {
                 var date;
-                if (item.DateUpp && item.DateLow){
+                if (item.DateUpp && item.DateLow) {
                     date = item.DateLow + " – " + item.DateUpp;
-                } else if (item.DateLow){
+                } else if (item.DateLow) {
                     date = "позже " + item.DateLow;
-                } else if (item.DateUpp){
+                } else if (item.DateUpp) {
                     date = "до " + item.DateUpp;
                 }
                 item.date = date;
                 return item
-           }); 
-        } 
+            });
+        }
     },
     watch: {
-        items: function(value){
+        items: function (value) {
             this.$el.scrollTop = 0;
         },
-        activeItemNum: function(value){
-            if (value && this.$refs[value][0])
-                this.$el.scrollTop = this.$refs[value][0].offsetTop - (this.$el.clientHeight - this.$refs[value][0].offsetHeight)/2;
+        activeItemNum: function (value) {
+            if (value && this.$refs[value][0]) {
+                this.$el.scrollTop = this.$refs[value][0].offsetTop - (this.$el.clientHeight - this.$refs[value][0].offsetHeight) / 2;
+            }
         }
     }
 });
 
 Vue.component('search', {
     template: '#searchTemplate',
-    data: function(){
-        return{
+    data: function () {
+        return {
             searchQuery: ""
         }
     }
@@ -148,31 +149,38 @@ Vue.component('filter-panel', {
     props: [
         "periodRange"
     ],
-    data: function(){
-        return{
+    data: function () {
+        return {
             period: [1500, 1700],
             periodControl: undefined,
-            defaultPeriodRange:{
+            defaultPeriodRange: {
                 min: 1500,
                 max: 1700
             }
         }
     },
     computed: {
-        periodRangeComputed: function(){            
+        periodRangeComputed: function () {
             return {
                 min: this.periodRange.min || this.defaultPeriodRange.min,
                 max: this.periodRange.max || this.defaultPeriodRange.max
+                // min: this.defaultPeriodRange.min,
+                // max: this.defaultPeriodRange.max
             }
         }
     },
     watch: {
-        periodRangeComputed: function(value){
+        period: function (value) {
+            this.updateMapLayersFilter(value);
+        },
+        periodRangeComputed: function (value) {
             this.period = [value.min, value.max];
-            if (this.$refs.periodControl) this.updateSlider(value);
+            if (this.$refs.periodControl) {
+                this.updateSlider(value) 
+            }
         }
     },
-    mounted: function(){
+    mounted: function () {
         var that = this;
 
         noUiSlider.create(that.$refs.periodControl, {
@@ -185,17 +193,17 @@ Vue.component('filter-panel', {
             step: 1
         });
 
-        that.$refs.periodControl.noUiSlider.on('update', function( values, handle ) {
+        that.$refs.periodControl.noUiSlider.on('update', function (values, handle) {
             that.period = values;
         });
 
-        that.$refs.periodControl.noUiSlider.on('change', function( values, handle ) {
+        that.$refs.periodControl.noUiSlider.on('change', function (values, handle) {
             that.period = values;
             that.$emit("filter:changed", that.period)
         });
     },
     methods: {
-        updateSlider: function(range){
+        updateSlider: function (range) {
             var that = this;
 
             this.$refs.periodControl.noUiSlider.updateOptions({
@@ -205,11 +213,15 @@ Vue.component('filter-panel', {
                     'max': range.max
                 }
             });
+        },
+
+        updateMapLayersFilter: function (range) {
+            updateMapLayersFilter({range: {min: Number(range[0]), max: Number(range[1])}});
         }
     }
 });
 
-var vueApp = new Vue({ 
-  el: '#vue-app'
+var vueApp = new Vue({
+    el: '#vue-app'
 });
 

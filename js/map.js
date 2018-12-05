@@ -2,6 +2,11 @@
  * Created by Tabletko on 01.11.2016.
  */
 
+ var parseYearFromDateStr = function(str) {
+    const datePattern = /(\d{4})/;
+    return Number(datePattern.exec(str)[0]);
+ }
+
 var mapLayersCache = {
     region_boundaries: {
         name: "Административные границы",
@@ -10,8 +15,16 @@ var mapLayersCache = {
         url: region_boundaries_layer_url,
         featureLayers: [], // Array<feature: Feature, layer: Marker>
         group: L.featureGroup(),
-        featureFilter: function (feature) {
-            return true;
+        featureFilter: function (feature, data) {
+            var min = data.range.min;
+            var max = data.range.max;
+            var prop = feature.properties;
+            var lw = parseYearFromDateStr(prop.LwDate);
+            var up = parseYearFromDateStr(prop.UpDtRl);
+            return lw <= max && up >= min;
+        },
+        style: function (feature) {
+            return { color: 'rgb(115, 92, 66)', width: 0.5, opacity: 1 };
         },
         isLoaded: false
     },
@@ -23,10 +36,15 @@ var mapLayersCache = {
         featureLayers: [], // Array<feature: Feature, layer: Marker>
         group: L.featureGroup(),
         pointToLayer: function (feature, latlng) {
-            return L.circle(latlng);
+            return L.circleMarker(latlng, { color: 'white', weight: 2, radius: 3, opacity: 1, fillOpacity: 1, fillColor: 'rgb(81, 163, 220)' });
         },
-        featureFilter: function (feature) {
-            return true;
+        featureFilter: function (feature, data) {
+            var min = data.range.min;
+            var max = data.range.max;
+            var prop = feature.properties;
+            var lw = prop.nijnyaya;
+            var up = prop.upperdate;
+            return lw <= max && up >= min;
         },
         isLoaded: false
     },
@@ -46,9 +64,6 @@ var mapLayersCache = {
         pointToLayer: function (feature, latlng) {
             return L.marker(latlng, { icon: defIcon });
         },
-        featureFilter: function (feature) {
-            return true;
-        },
         isLoaded: false
     }
 };
@@ -66,8 +81,6 @@ var updateLayersOrder = function () {
     });
 }
 updateLayersOrder();
-
-
 
 var mainMap = L.map('map').setView([55.6, 37], 8),
     popup = $(".object-info"),
@@ -93,7 +106,7 @@ var mainMap = L.map('map').setView([55.6, 37], 8),
 for (var fry = 0; fry < orderedCache.length; fry++) {
     var m = orderedCache[fry];
     if (m.layersControl) {
-        infoLayers.push({name: m.name || m.url, layer: m.group});
+        infoLayers.push({ name: m.name || m.url, layer: m.group });
     }
 }
 
@@ -226,7 +239,8 @@ var loadlayerGeojson = function (name) {
                     mem.featureLayers.push({ feature: feature, layer: layer });
                     mem.group.addLayer(layer);
                 },
-                pointToLayer: mem.pointToLayer
+                pointToLayer: mem.pointToLayer,
+                style: mem.style
             });
             if (mem.order) {
                 mem.group.setZIndex(mem.order);
@@ -246,6 +260,26 @@ for (var l in mapLayersCache) {
     }
 }
 
+var updateMapLayersFilter = function (data) {
+    for (var l in mapLayersCache) {
+        if (mapLayersCache.hasOwnProperty(l)) {
+            var mem = mapLayersCache[l];
+            if (mem.featureFilter) {
+                for (var fry = 0; fry < mem.featureLayers.length; fry++) {
+                    var fl = mem.featureLayers[fry];
+                    var feature = fl.feature;
+                    var layer = fl.layer;
+                    var match = mem.featureFilter(feature, data);
+                    if (!match) {
+                        mem.group.removeLayer(layer);
+                    } else {
+                        mem.group.addLayer(layer);
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 mainMap.on("click", function (e) {
